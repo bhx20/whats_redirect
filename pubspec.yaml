@@ -19,6 +19,9 @@ dependencies:
   sqflite: ^2.3.3+1
   intl: ^0.19.0
   flutter_slidable: ^3.1.0
+  flutter_screenutil: ^5.9.3
+  get: ^4.6.6
+  fluttertoast: ^8.2.5
 
 dev_dependencies:
   flutter_test:
@@ -30,5 +33,21 @@ flutter:
 
   assets:
     - assets/
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto-Thin.ttf
+          weight: 100
 
 
