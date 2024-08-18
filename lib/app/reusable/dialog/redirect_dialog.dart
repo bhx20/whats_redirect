@@ -35,6 +35,7 @@ class AppDialog {
                 hintText: "Phone Number",
                 autofocus: true,
                 focusNode: inputNode,
+                maxLength: 15,
               ),
               SizedBox(height: 10.h),
               Row(

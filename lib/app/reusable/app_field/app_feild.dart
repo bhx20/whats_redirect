@@ -13,30 +13,36 @@ class AppTextField extends StatelessWidget {
   final bool autofocus;
   final FocusNode? focusNode;
   final void Function(String)? onSubmitted;
+  final Function(String)? onChanged;
+  final List<TextInputFormatter>? numFormater;
+  final int? maxLength;
 
-  const AppTextField({
-    super.key,
-    this.errorText,
-    this.hintText = "",
-    this.controller,
-    this.keyboardType,
-    this.prefix,
-    this.onSubmitted,
-    this.autofocus = false,
-    this.focusNode,
-  });
+  const AppTextField(
+      {super.key,
+      this.errorText,
+      this.hintText = "",
+      this.controller,
+      this.keyboardType,
+      this.prefix,
+      this.onSubmitted,
+      this.autofocus = false,
+      this.focusNode,
+      this.onChanged,
+      this.numFormater,
+      this.maxLength});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      keyboardType: TextInputType.number,
+      keyboardType: keyboardType ?? TextInputType.number,
       cursorColor: const Color(0xff1daa61),
       onSubmitted: onSubmitted,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      maxLength: 10,
+      inputFormatters: numFormater ?? [FilteringTextInputFormatter.digitsOnly],
+      maxLength: maxLength,
       style: typo.get14.w400,
       autofocus: autofocus,
       focusNode: focusNode,
+      onChanged: onChanged,
       decoration: InputDecoration(
         counterText: "",
         contentPadding: EdgeInsets.symmetric(horizontal: 20.w),

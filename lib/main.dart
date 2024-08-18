@@ -6,6 +6,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:redirect/app/uttils/local_db/sql_helper.dart';
 import 'app/core/app_typography.dart';
 import 'app/module/dashboard/dashBoard_view.dart';
+import 'app/reusable/initial_binding.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
           title: 'WhatsApp Redirect',
           theme: ThemeData(fontFamily: TextFontFamily.roboto),
           debugShowCheckedModeBanner: false,
+          initialBinding: InitialBinding(),
           home: const DashBoardView(),
         );
       },

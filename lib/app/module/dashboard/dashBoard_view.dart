@@ -54,11 +54,11 @@ class _DashBoardViewState extends State<DashBoardView> {
                       NavigationDestination(
                         selectedIcon: Image.asset(
                           "assets/redirect_fill.png",
-                          height: 14.h,
+                          height: 13.h,
                         ),
                         icon: Image.asset(
                           "assets/redirect.png",
-                          height: 14.h,
+                          height: 13.h,
                         ),
                         label: 'What\'s Redirect',
                       ),
