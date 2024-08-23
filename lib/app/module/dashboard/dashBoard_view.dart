@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:redirect/app/core/app_colors.dart';
-import 'package:redirect/app/core/app_typography.dart';
 import 'package:redirect/app/reusable/generated_scaffold.dart';
 
+import '../../core/app_typography.dart';
 import '../redirect/redirect_view.dart';
+import '../saver/saver_view.dart';
 import 'dashBoard_controller.dart';
 
 class DashBoardView extends StatefulWidget {
@@ -27,9 +28,9 @@ class _DashBoardViewState extends State<DashBoardView> {
                 backgroundColor: AppColors.white,
                 indicatorColor: AppColors.xffdbfed4,
                 elevation: 0,
-                labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
-                  (Set<WidgetState> states) {
-                    if (states.contains(WidgetState.selected)) {
+                labelTextStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.selected)) {
                       return typo.w700.get11;
                     }
                     return typo.w500.get11;
@@ -80,7 +81,7 @@ class _DashBoardViewState extends State<DashBoardView> {
             ),
             body: [
               const RedirectView(),
-              const RedirectView(),
+              const SaverView(),
             ][c.currentPageIndex.value],
           );
         });
