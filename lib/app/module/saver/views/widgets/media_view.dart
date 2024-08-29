@@ -1,159 +1,116 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:redirect/app/module/saver/views/widgets/open_video_dialog.dart';
 import 'package:redirect/app/reusable/icon/action_icon.dart';
 import 'package:redirect/app/reusable/loader/simmer.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 
+import '../../../../core/app_colors.dart';
 import '../../../../core/app_typography.dart';
-import '../../../../model/local.dart';
-import '../../../../reusable/globle.dart';
-import 'open_image_dialog.dart';
+import '../../controllers/status_controller.dart';
 
-class MediaView extends StatefulWidget {
+class MediaView extends StatelessWidget {
   const MediaView({super.key});
 
   @override
-  State<MediaView> createState() => _MediaViewState();
-}
-
-class _MediaViewState extends State<MediaView> {
-  final Directory directory = Directory(
-      '/storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses');
-  RxList<MediaType> mediaList = <MediaType>[].obs;
-  var isLoaded = false.obs;
-
-  @override
-  void initState() {
-    super.initState();
-    getStatusData();
-  }
-
-  void getStatusData() {
-    if (Directory(directory.path).existsSync()) {
-      isLoaded(false);
-      mediaList.value = directory
-          .listSync()
-          .where((item) => _isValidMedia(item.path))
-          .map((item) => MediaType(
-                file: File(item.path),
-                isVideo: _isVideo(item.path),
-              ))
-          .toList(growable: false)
-        ..sort((a, b) => b.file.path.compareTo(a.file.path));
-      isLoaded(true);
-    }
-  }
-
-  bool _isValidMedia(String path) {
-    final extension = path.split('.').last.toLowerCase();
-    return ['jpg'].contains(extension) || ['mp4'].contains(extension);
-  }
-
-  bool _isVideo(String path) {
-    final extension = path.split('.').last.toLowerCase();
-    return ['mp4'].contains(extension);
-  }
-
-  void _openMedia(File file, bool isVideo) {
-    if (isVideo) {
-      openVideo(context, file);
-    } else {
-      openImage(context, file.path);
-    }
-  }
-
-  downloadImage(String imgPath) async {
-    final myUri = Uri.parse(imgPath);
-    final originalImageFile = File.fromUri(myUri);
-    late Uint8List bytes;
-    await originalImageFile.readAsBytes().then((value) {
-      bytes = Uint8List.fromList(value);
-    }).catchError((onError) {});
-    await ImageGallerySaver.saveImage(Uint8List.fromList(bytes));
-    showToast("Image Downloaded Successfully");
-  }
-
-  downloadVideo(File file) async {
-    final result =
-        await ImageGallerySaver.saveFile(file.path, isReturnPathOfIOS: true);
-    if (result['isSuccess'] == true) {
-      showToast("Video Downloaded Successfully");
-    } else {
-      showToast("Failed to Download Video");
-    }
-  }
-
-  bool isWhatsApp() {
-    return Directory(directory.path).existsSync();
-  }
-
-  Future<File?> _generateThumbnail(File videoFile) async {
-    final thumbnail = await VideoThumbnail.thumbnailFile(
-      video: videoFile.path,
-      thumbnailPath: (await Directory.systemTemp.createTemp()).path,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 1280,
-      quality: 75,
-    );
-    return thumbnail != null ? File(thumbnail) : null;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (isWhatsApp()) {
-      return Obx(() {
-        if (isLoaded.isTrue) {
-          if (mediaList.isNotEmpty) {
-            return Container(
-              margin: EdgeInsets.all(5.h),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2 / 3,
-                  crossAxisSpacing: 5.h,
-                  mainAxisSpacing: 5.h,
+    return GetBuilder<StatusController>(builder: (controller) {
+      if (controller.isWhatsApp()) {
+        return Obx(() {
+          if (controller.isLoaded.isTrue) {
+            if (controller.mediaList.isNotEmpty) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Column(
+                  children: [
+                    _buildFilterList(controller),
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 2 / 3,
+                          crossAxisSpacing: 5.h,
+                          mainAxisSpacing: 5.h,
+                        ),
+                        itemCount: controller.filteredMediaList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final File file =
+                              controller.filteredMediaList[index].file;
+                          final bool isVideo =
+                              controller.filteredMediaList[index].isVideo;
+                          return _buildMediaItem(
+                              context, file, isVideo, controller);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-                itemCount: mediaList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final File file = mediaList[index].file;
-                  final bool isVideo = mediaList[index].isVideo;
-                  return _buildMediaItem(file, isVideo);
-                },
-              ),
-            );
+              );
+            } else {
+              return _noDataView();
+            }
           } else {
-            return _noDataView();
+            return _buildLoader();
           }
-        } else {
-          return Container(
-            margin: EdgeInsets.all(5.h),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 2 / 3,
-                crossAxisSpacing: 5.h,
-                mainAxisSpacing: 5.h,
-              ),
-              itemCount: 10,
-              itemBuilder: (BuildContext context, int index) {
-                return const SimmerLoader(radius: 10);
-              },
-            ),
-          );
-        }
-      });
-    } else {
-      return _noWhatsappView();
-    }
+        });
+      } else {
+        return _noWhatsappView();
+      }
+    });
   }
 
-  Widget _buildMediaItem(File file, bool isVideo) {
+  Widget _buildFilterList(StatusController c) {
+    return Row(
+      children: List.generate(
+        c.filterList.length,
+        (index) => GestureDetector(
+          onTap: () {
+            c.updateFilter(index);
+          },
+          child: Container(
+            decoration: BoxDecoration(
+                color: c.selectedCategory.value == index
+                    ? AppColors.xffdbfed4
+                    : AppColors.xfff6f5f3,
+                borderRadius: BorderRadius.circular(100)),
+            margin: EdgeInsets.symmetric(vertical: 15.h, horizontal: 3.w),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+            child: Center(
+                child: Text(
+              c.filterList[index],
+              style: typo.w500.textColor(
+                c.selectedCategory.value == index
+                    ? AppColors.xff185E3C
+                    : AppColors.xff7b7a78,
+              ),
+            )),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoader() {
+    return Container(
+      margin: EdgeInsets.all(5.h),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 2 / 3,
+          crossAxisSpacing: 5.h,
+          mainAxisSpacing: 5.h,
+        ),
+        itemCount: 10,
+        itemBuilder: (BuildContext context, int index) {
+          return const SimmerLoader(radius: 10);
+        },
+      ),
+    );
+  }
+
+  Widget _buildMediaItem(BuildContext context, File file, bool isVideo,
+      StatusController controller) {
     Widget imageView(File file) {
       return Stack(
         fit: StackFit.expand,
@@ -168,7 +125,7 @@ class _MediaViewState extends State<MediaView> {
               child: ActionIcon(
                 Icons.download,
                 onTap: () {
-                  downloadImage(file.path);
+                  controller.downloadImage(file.path);
                 },
               )),
         ],
@@ -177,7 +134,7 @@ class _MediaViewState extends State<MediaView> {
 
     Widget videoView(File file) {
       return FutureBuilder<File?>(
-        future: _generateThumbnail(file),
+        future: controller.generateThumbnail(file),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SimmerLoader(
@@ -211,7 +168,7 @@ class _MediaViewState extends State<MediaView> {
                     child: ActionIcon(
                       Icons.download,
                       onTap: () {
-                        downloadVideo(file);
+                        controller.downloadVideo(file);
                       },
                     )),
                 Icon(
@@ -228,7 +185,7 @@ class _MediaViewState extends State<MediaView> {
 
     return GestureDetector(
       onTap: () {
-        _openMedia(file, isVideo);
+        controller.openMedia(context, file, isVideo);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(5),

@@ -97,9 +97,7 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
                 style: typo.w500.get10,
               ),
               IconButton(
-                onPressed: () {
-                  controller.getStatusData();
-                },
+                onPressed: () {},
                 icon: const Icon(Icons.refresh, color: Color(0xff54656f)),
               )
             ],

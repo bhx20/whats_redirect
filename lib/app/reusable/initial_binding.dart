@@ -15,6 +15,8 @@ class InitialController extends GetxController {
   void onInit() {
     Get.put(RedirectController()).getUserNumber();
     Get.put(StatusController()).getStatusData();
+    ();
+
     super.onInit();
   }
 }

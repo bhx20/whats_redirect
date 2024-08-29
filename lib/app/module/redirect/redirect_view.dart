@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:redirect/app/core/app_typography.dart';
 import 'package:redirect/app/module/redirect/redirect_controller.dart';
+
 import '../../core/app_colors.dart';
 import '../../model/user_number_model.dart';
 import '../../reusable/app_field/app_feild.dart';
@@ -210,7 +211,7 @@ class RedirectView extends StatelessWidget {
     );
   }
 
-  Row _buildFilterList(RedirectController c) {
+  Widget _buildFilterList(RedirectController c) {
     return Row(
       children: List.generate(
         c.filterList.length,
