@@ -6,7 +6,7 @@ import 'package:redirect/app/reusable/generated_scaffold.dart';
 
 import '../../core/app_typography.dart';
 import '../redirect/redirect_view.dart';
-import '../saver/saver_view.dart';
+import '../saver/views/status_view.dart';
 import 'dashBoard_controller.dart';
 
 class DashBoardView extends StatefulWidget {
@@ -81,7 +81,7 @@ class _DashBoardViewState extends State<DashBoardView> {
             ),
             body: [
               const RedirectView(),
-              const SaverView(),
+              const StatusView(),
             ][c.currentPageIndex.value],
           );
         });
