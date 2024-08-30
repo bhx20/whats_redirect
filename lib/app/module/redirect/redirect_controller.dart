@@ -25,7 +25,7 @@ class RedirectController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    filteredUserNumberList.value = userNumberList; // Initialize filtered list
+    filteredUserNumberList.value = userNumberList;
   }
 
   @override
@@ -41,6 +41,10 @@ class RedirectController extends GetxController {
       title: "Refresh",
     ),
     MoreItem(
+      icon: Icons.help_outline,
+      title: "Help",
+    ),
+    MoreItem(
       icon: Icons.exit_to_app,
       title: "Exit",
     ),
@@ -48,6 +52,11 @@ class RedirectController extends GetxController {
 
   Future<void> launchWhatsApp(String phoneNumber,
       {bool saveOnDB = true}) async {
+    if (phoneNumber.startsWith('+91')) {
+      phoneNumber = phoneNumber.substring(3);
+    } else if (phoneNumber.startsWith('91')) {
+      phoneNumber = phoneNumber.substring(2);
+    }
     var androidUrl = "whatsapp://send?phone=+91$phoneNumber&text=Hi";
 
     try {
@@ -58,7 +67,6 @@ class RedirectController extends GetxController {
           await getUserNumber();
         }
       }
-
       phoneController.clear();
     } catch (e) {
       showToast(e.toString());
@@ -107,6 +115,27 @@ class RedirectController extends GetxController {
     }
 
     loading(false);
+  }
+
+  void help() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: "coddynet@gmail.com",
+    );
+    urlLauncher(params);
+  }
+
+  Future<void> urlLauncher(Uri url) async {
+    final bool nativeAppLaunchSucceeded = await launchUrl(
+      url,
+      mode: LaunchMode.externalNonBrowserApplication,
+    );
+    if (!nativeAppLaunchSucceeded) {
+      await launchUrl(
+        url,
+        mode: LaunchMode.inAppWebView,
+      );
+    }
   }
 
   Future<void> _fetchAndSortUserNumbers() async {

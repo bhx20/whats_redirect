@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -11,12 +9,24 @@ import 'package:redirect/app/module/redirect/redirect_controller.dart';
 import '../../core/app_colors.dart';
 import '../../model/user_number_model.dart';
 import '../../reusable/app_field/app_feild.dart';
+import '../../reusable/dialog/delete_dialog.dart';
 import '../../reusable/dialog/redirect_dialog.dart';
+import '../../reusable/dialog/warning_dialog.dart';
 import '../../reusable/generated_scaffold.dart';
 import '../../reusable/loader/simmer.dart';
 
-class RedirectView extends StatelessWidget {
+class RedirectView extends StatefulWidget {
   const RedirectView({super.key});
+
+  @override
+  State<RedirectView> createState() => _RedirectViewState();
+}
+
+class _RedirectViewState extends State<RedirectView> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +39,7 @@ class RedirectView extends StatelessWidget {
             if (c.userNumberList.isNotEmpty) {
               return FloatingActionButton(
                 onPressed: () {
-                  AppDialog().redirect(context);
+                  redirect(context);
                 },
                 elevation: 3,
                 backgroundColor: AppColors.xff1DAB61,
@@ -118,7 +128,7 @@ class RedirectView extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          AppDialog().redirect(context);
+                          redirect(context);
                         },
                         child: Container(
                           height: 30.h,
@@ -183,7 +193,7 @@ class RedirectView extends StatelessWidget {
                   borderRadius:
                       const BorderRadius.horizontal(left: Radius.circular(100)),
                   onPressed: (context) {
-                    AppDialog().redirect(context, data: contact[index]);
+                    redirect(context, data: contact[index]);
                   },
                   backgroundColor: AppColors.xffdbfed4,
                   foregroundColor: AppColors.xff1DAB61,
@@ -192,7 +202,7 @@ class RedirectView extends StatelessWidget {
                 SlidableAction(
                   flex: 1,
                   onPressed: (context) {
-                    AppDialog().deleteDialog(context, data: contact[index]);
+                    deleteDialog(context, data: contact[index]);
                   },
                   backgroundColor: AppColors.xff1DAB61,
                   foregroundColor: Colors.white,
@@ -345,8 +355,11 @@ class RedirectView extends StatelessWidget {
                         if (index == 0) {
                           Get.back();
                           c.getUserNumber();
+                        } else if (index == 1) {
+                          Get.back();
+                          c.help();
                         } else {
-                          exit(0);
+                          warningDialog(context);
                         }
                       },
                       child: Row(

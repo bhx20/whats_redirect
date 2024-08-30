@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:redirect/app/core/app_typography.dart';
 
 import '../../../core/app_colors.dart';
+import '../../../reusable/dialog/warning_dialog.dart';
 import '../../../reusable/generated_scaffold.dart';
 import '../../../reusable/loader/simmer.dart';
 import '../controllers/status_controller.dart';
@@ -148,8 +147,11 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
                     if (index == 0) {
                       Get.back();
                       c.getStatusData();
+                    } else if (index == 1) {
+                      Get.back();
+                      c.help();
                     } else {
-                      exit(0);
+                      warningDialog(context);
                     }
                   },
                   child: Row(

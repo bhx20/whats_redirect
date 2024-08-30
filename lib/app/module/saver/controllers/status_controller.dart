@@ -8,6 +8,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../model/local.dart';
@@ -32,6 +33,10 @@ class StatusController extends GetxController {
     MoreItem(
       icon: Icons.refresh,
       title: "Refresh",
+    ),
+    MoreItem(
+      icon: Icons.help_outline,
+      title: "Help",
     ),
     MoreItem(
       icon: Icons.exit_to_app,
@@ -135,6 +140,27 @@ class StatusController extends GetxController {
 
       isLoaded(true);
       update();
+    }
+  }
+
+  void help() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: "coddynet@gmail.com",
+    );
+    urlLauncher(params);
+  }
+
+  Future<void> urlLauncher(Uri url) async {
+    final bool nativeAppLaunchSucceeded = await launchUrl(
+      url,
+      mode: LaunchMode.externalNonBrowserApplication,
+    );
+    if (!nativeAppLaunchSucceeded) {
+      await launchUrl(
+        url,
+        mode: LaunchMode.inAppWebView,
+      );
     }
   }
 
