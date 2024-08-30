@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 class DownloadData {
@@ -13,4 +14,10 @@ class MediaType {
   final File file;
   final bool isVideo;
   MediaType({required this.file, required this.isVideo});
+}
+
+class MoreItem {
+  final IconData icon;
+  final String title;
+  MoreItem({required this.icon, required this.title});
 }

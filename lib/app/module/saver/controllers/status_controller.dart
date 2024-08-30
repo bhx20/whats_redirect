@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
@@ -27,6 +27,17 @@ class StatusController extends GetxController {
 
   RxList<DownloadData> downloadList = <DownloadData>[].obs;
   var isLoaded = false.obs;
+
+  List<MoreItem> items = [
+    MoreItem(
+      icon: Icons.refresh,
+      title: "Refresh",
+    ),
+    MoreItem(
+      icon: Icons.exit_to_app,
+      title: "Exit",
+    ),
+  ];
 
   @override
   void onInit() {
@@ -109,7 +120,7 @@ class StatusController extends GetxController {
     return finalPermission;
   }
 
-  void getStatusData() {
+  getStatusData() {
     if (Directory(directory.path).existsSync()) {
       isLoaded(false);
       mediaList.value = directory
@@ -121,7 +132,9 @@ class StatusController extends GetxController {
               ))
           .toList(growable: false)
         ..sort((a, b) => b.file.path.compareTo(a.file.path));
+
       isLoaded(true);
+      update();
     }
   }
 

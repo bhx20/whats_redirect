@@ -1,8 +1,11 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../model/local.dart';
 import '../../model/user_number_model.dart';
 import '../../reusable/globle.dart';
 import '../../uttils/local_db/sql_helper.dart';
@@ -31,6 +34,17 @@ class RedirectController extends GetxController {
     phoneController.dispose();
     super.onClose();
   }
+
+  List<MoreItem> items = [
+    MoreItem(
+      icon: Icons.refresh,
+      title: "Refresh",
+    ),
+    MoreItem(
+      icon: Icons.exit_to_app,
+      title: "Exit",
+    ),
+  ];
 
   Future<void> launchWhatsApp(String phoneNumber,
       {bool saveOnDB = true}) async {

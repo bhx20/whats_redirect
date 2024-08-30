@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../core/app_colors.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -28,7 +29,7 @@ class AppScaffold extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,
-        statusBarColor: statusBarColor ?? AppColors.appColor,
+        statusBarColor: statusBarColor ?? AppColors.white,
       ),
       child: SafeArea(
         child: Scaffold(

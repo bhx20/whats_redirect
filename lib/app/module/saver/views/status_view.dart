@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:redirect/app/core/app_typography.dart';
 
+import '../../../core/app_colors.dart';
 import '../../../reusable/generated_scaffold.dart';
 import '../../../reusable/loader/simmer.dart';
 import '../controllers/status_controller.dart';
@@ -17,10 +20,13 @@ class StatusView extends StatefulWidget {
 }
 
 class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
+  late StatusController _controller;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _controller = Get.find<StatusController>();
   }
 
   @override
@@ -30,22 +36,27 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
-      Get.find<StatusController>().permissionCheck =
-          Get.find<StatusController>().getPermissionStatus();
-      setState(() {});
+      // Check permissions when app is resumed
+      int permissionStatus = await _controller.getPermissionStatus();
+
+      if (permissionStatus == 1) {
+        // Refresh the data if permission is granted
+        _controller.getStatusData();
+        setState(() {}); // Ensure the UI is updated
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
-      appBar: _topBar(),
-      body: GetBuilder<StatusController>(
-        init: StatusController(),
-        builder: (controller) {
-          return FutureBuilder<int>(
+    return GetBuilder<StatusController>(
+      init: StatusController(),
+      builder: (controller) {
+        return AppScaffold(
+          appBar: _topBar(controller),
+          body: FutureBuilder<int>(
             future: controller.permissionCheck,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -60,26 +71,28 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
                 return _loadingView();
               }
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget _loadingView() {
     return Container(
-        margin: EdgeInsets.all(5.h),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 2 / 3,
-              crossAxisSpacing: 5.h,
-              mainAxisSpacing: 5.h),
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) {
-            return const SimmerLoader(radius: 10);
-          },
-        ));
+      margin: EdgeInsets.all(5.h),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 2 / 3,
+          crossAxisSpacing: 5.h,
+          mainAxisSpacing: 5.h,
+        ),
+        itemCount: 10,
+        itemBuilder: (BuildContext context, int index) {
+          return const SimmerLoader(radius: 10);
+        },
+      ),
+    );
   }
 
   Widget _errorView(StatusController controller) {
@@ -97,9 +110,11 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
                 style: typo.w500.get10,
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.getStatusData();
+                },
                 icon: const Icon(Icons.refresh, color: Color(0xff54656f)),
-              )
+              ),
             ],
           ),
         ),
@@ -107,7 +122,7 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
     );
   }
 
-  AppBar _topBar() {
+  AppBar _topBar(StatusController c) {
     return AppBar(
       surfaceTintColor: Colors.transparent,
       backgroundColor: Colors.white,
@@ -117,9 +132,48 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.refresh, color: Color(0xff54656f)),
-        )
+          onPressed: () {
+            showMenu(
+              color: AppColors.white,
+              context: Get.context!,
+              elevation: 0.5,
+              position: const RelativeRect.fromLTRB(0, 0, -100, 0),
+              items: c.items.asMap().entries.map((entry) {
+                int index = entry.key;
+                var item = entry.value;
+
+                return PopupMenuItem<int>(
+                  value: index + 1,
+                  onTap: () {
+                    if (index == 0) {
+                      Get.back();
+                      c.getStatusData();
+                    } else {
+                      exit(0);
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 10.h, left: 5.h),
+                        child: Icon(
+                          item.icon,
+                          size: 15.h,
+                          color: AppColors.xff185E3C,
+                        ),
+                      ),
+                      Text(
+                        item.title,
+                        style: typo.get10.black.w700,
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            );
+          },
+          icon: const Icon(Icons.more_vert_outlined, color: Color(0xff54656f)),
+        ),
       ],
     );
   }

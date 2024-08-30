@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -327,8 +329,47 @@ class RedirectView extends StatelessWidget {
         Obx(() {
           if (c.userNumberList.isNotEmpty) {
             return IconButton(
-              onPressed: c.getUserNumber,
-              icon: const Icon(Icons.refresh, color: Color(0xff54656f)),
+              onPressed: () {
+                showMenu(
+                  color: AppColors.white,
+                  context: Get.context!,
+                  elevation: 0.5,
+                  position: const RelativeRect.fromLTRB(0, 0, -100, 0),
+                  items: c.items.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    var item = entry.value;
+
+                    return PopupMenuItem<int>(
+                      value: index + 1,
+                      onTap: () {
+                        if (index == 0) {
+                          Get.back();
+                          c.getUserNumber();
+                        } else {
+                          exit(0);
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 10.h, left: 5.h),
+                            child: Icon(
+                              item.icon,
+                              size: 15.h,
+                              color: AppColors.xff185E3C,
+                            ),
+                          ),
+                          Text(
+                            item.title,
+                            style: typo.get10.black.w700,
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
+              icon: const Icon(Icons.more_vert_rounded),
             );
           } else {
             return const SizedBox();
