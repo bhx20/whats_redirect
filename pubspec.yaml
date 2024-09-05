@@ -4,7 +4,7 @@ description: "A new Flutter project."
 publish_to: 'none'
 
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: '>=3.3.4 <4.0.0'
@@ -27,9 +27,11 @@ dependencies:
   permission_handler: ^11.3.1
   video_thumbnail: ^0.5.3
   share_plus: ^10.0.0
-  image_gallery_saver: ^2.0.3
+
   cr_file_saver: ^0.0.2+1
   video_player: ^2.9.1
+  shared_preferences: ^2.3.2
+  gal: ^2.3.0
 
 dev_dependencies:
   flutter_test:

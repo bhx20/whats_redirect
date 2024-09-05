@@ -11,8 +11,10 @@ import 'package:video_player/video_player.dart';
 import '../../controllers/status_controller.dart';
 
 openVideo(BuildContext context, File file) {
-  showDialog(
+  showModalBottomSheet(
+    isScrollControlled: true,
     context: context,
+    backgroundColor: AppColors.trans,
     builder: (BuildContext context) {
       return OpenVideoWidget(
         file: file,
@@ -46,7 +48,7 @@ class _OpenVideoWidgetState extends State<OpenVideoWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.transparent,
-        body: InkWell(
+        body: GestureDetector(
           onTap: () {
             Get.back();
           },

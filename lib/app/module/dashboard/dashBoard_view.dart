@@ -8,6 +8,7 @@ import 'package:redirect/app/reusable/generated_scaffold.dart';
 import '../../core/app_typography.dart';
 import '../../reusable/dialog/redirect_dialog.dart';
 import '../../reusable/dialog/warning_dialog.dart';
+import '../../uttils/local_db/prefrances.dart';
 import '../redirect/redirect_view.dart';
 import '../saver/views/status_view.dart';
 import 'dashBoard_controller.dart';
@@ -32,7 +33,11 @@ class _DashBoardViewState extends State<DashBoardView> {
       final String clipboardText = data.text!.trim();
       final RegExp phoneRegExp = RegExp(r'^\+?\d+$');
       if (phoneRegExp.hasMatch(clipboardText)) {
-        redirect(context, number: clipboardText);
+        final String? lastShownNumber =
+            await PreferenceHelper.instance.getData(Pref.lastShownNumber);
+        if (lastShownNumber != clipboardText) {
+          redirect(context, number: clipboardText);
+        }
       }
     }
   }
@@ -58,9 +63,9 @@ class _DashBoardViewState extends State<DashBoardView> {
                   backgroundColor: AppColors.white,
                   indicatorColor: AppColors.xffdbfed4,
                   elevation: 0,
-                  labelTextStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.selected)) {
+                  labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>(
+                    (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.selected)) {
                         return typo.w700.get11;
                       }
                       return typo.w500.get11;
@@ -102,7 +107,7 @@ class _DashBoardViewState extends State<DashBoardView> {
                             "assets/saver_fill.png",
                             height: 22.h,
                           ),
-                          label: 'Status Saver',
+                          label: 'What\'s Saver',
                         ),
                       ],
                     ),

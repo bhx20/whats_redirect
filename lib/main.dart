@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:redirect/app/uttils/local_db/sql_helper.dart';
+
 import 'app/core/app_typography.dart';
 import 'app/module/dashboard/dashBoard_view.dart';
 import 'app/reusable/initial_binding.dart';
+import 'app/uttils/local_db/prefrances.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +16,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await PreferenceHelper.instance.createSharedPref();
   runApp(const MyApp());
 }
 

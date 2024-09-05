@@ -20,12 +20,13 @@ class StatusView extends StatefulWidget {
 
 class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
   late StatusController _controller;
-
+  RxBool isMore = false.obs;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _controller = Get.find<StatusController>();
+    getMore();
   }
 
   @override
@@ -38,13 +39,21 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     if (state == AppLifecycleState.resumed) {
       // Check permissions when app is resumed
-      int permissionStatus = await _controller.getPermissionStatus();
+      _controller.permissionCheck = _controller.getPermissionStatus();
 
-      if (permissionStatus == 1) {
-        // Refresh the data if permission is granted
+      if (await _controller.permissionCheck == 1) {
+        isMore(true);
         _controller.getStatusData();
         setState(() {}); // Ensure the UI is updated
       }
+    }
+  }
+
+  getMore() async {
+    if (await _controller.permissionCheck == 1) {
+      isMore(true);
+
+      setState(() {}); // Ensure the UI is updated
     }
   }
 
@@ -130,52 +139,55 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
         style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff1daa61)),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            showMenu(
-              color: AppColors.white,
-              context: Get.context!,
-              elevation: 0.5,
-              position: const RelativeRect.fromLTRB(0, 0, -100, 0),
-              items: c.items.asMap().entries.map((entry) {
-                int index = entry.key;
-                var item = entry.value;
+        if (isMore.isTrue)
+          IconButton(
+            onPressed: () {
+              showMenu(
+                color: AppColors.white,
+                context: Get.context!,
+                elevation: 0.5,
+                position: const RelativeRect.fromLTRB(0, 0, -100, 0),
+                items: c.items.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  var item = entry.value;
 
-                return PopupMenuItem<int>(
-                  value: index + 1,
-                  onTap: () {
-                    if (index == 0) {
-                      Get.back();
-                      c.getStatusData();
-                    } else if (index == 1) {
-                      Get.back();
-                      c.help();
-                    } else {
-                      warningDialog(context);
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 10.h, left: 5.h),
-                        child: Icon(
-                          item.icon,
-                          size: 15.h,
-                          color: AppColors.xff185E3C,
+                  return PopupMenuItem<int>(
+                    value: index + 1,
+                    onTap: () {
+                      if (index == 0) {
+                        Get.back();
+                        isMore(true);
+                        c.getStatusData();
+                      } else if (index == 1) {
+                        Get.back();
+                        c.help();
+                      } else {
+                        warningDialog(context);
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 10.h, left: 5.h),
+                          child: Icon(
+                            item.icon,
+                            size: 15.h,
+                            color: AppColors.xff185E3C,
+                          ),
                         ),
-                      ),
-                      Text(
-                        item.title,
-                        style: typo.get10.black.w700,
-                      ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            );
-          },
-          icon: const Icon(Icons.more_vert_outlined, color: Color(0xff54656f)),
-        ),
+                        Text(
+                          item.title,
+                          style: typo.get10.black.w700,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+            icon:
+                const Icon(Icons.more_vert_outlined, color: Color(0xff54656f)),
+          ),
       ],
     );
   }

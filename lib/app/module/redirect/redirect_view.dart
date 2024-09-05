@@ -286,7 +286,7 @@ class _RedirectViewState extends State<RedirectView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data.userName ?? " ",
+                        data.userName ?? "Unknown",
                         selectionColor: Colors.white,
                         maxLines: 1,
                         style: typo.w700.get14,

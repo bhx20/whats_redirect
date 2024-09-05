@@ -6,11 +6,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:redirect/app/module/saver/controllers/status_controller.dart';
 
+import '../../../../core/app_colors.dart';
 import '../../../../reusable/icon/action_icon.dart';
 
 openImage(BuildContext context, String imagePath) {
-  showDialog(
+  showModalBottomSheet(
+    isScrollControlled: true,
     context: context,
+    backgroundColor: AppColors.trans,
     builder: (BuildContext context) {
       return OpenImageDialog(
         imagePath: imagePath,

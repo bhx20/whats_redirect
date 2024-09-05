@@ -1,10 +1,9 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:gal/gal.dart';
 import 'package:get/get.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
@@ -198,24 +197,14 @@ class StatusController extends GetxController {
   }
 
   downloadImage(String imgPath) async {
-    final myUri = Uri.parse(imgPath);
-    final originalImageFile = File.fromUri(myUri);
-    late Uint8List bytes;
-    await originalImageFile.readAsBytes().then((value) {
-      bytes = Uint8List.fromList(value);
-    }).catchError((onError) {});
-    await ImageGallerySaver.saveImage(Uint8List.fromList(bytes));
+    await Gal.putImage(imgPath);
     showToast("Image Downloaded Successfully");
   }
 
   downloadVideo(File file) async {
-    final result =
-        await ImageGallerySaver.saveFile(file.path, isReturnPathOfIOS: true);
-    if (result['isSuccess'] == true) {
-      showToast("Video Downloaded Successfully");
-    } else {
-      showToast("Failed to Download Video");
-    }
+    await Gal.putVideo(file.path);
+
+    showToast("Video Downloaded Successfully");
   }
 
   bool isWhatsApp() {
