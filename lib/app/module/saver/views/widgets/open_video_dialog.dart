@@ -41,6 +41,7 @@ class _OpenVideoWidgetState extends State<OpenVideoWidget> {
     _controller = VideoPlayerController.file(widget.file)
       ..initialize().then((_) {
         setState(() {});
+        _controller.play();
       });
   }
 
@@ -63,41 +64,21 @@ class _OpenVideoWidgetState extends State<OpenVideoWidget> {
               Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: VideoPlayer(_controller),
-                        ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: InkWell(
+                      onTap: () {
+                        if (_controller.value.isPlaying) {
+                          _controller.pause();
+                        } else {
+                          _controller.play();
+                        }
+                      },
+                      child: AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
                       ),
-                      if (_controller.value.isPlaying)
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _controller.pause();
-                              });
-                            },
-                            icon: Icon(
-                              Icons.pause,
-                              color: AppColors.white,
-                              size: 30.h,
-                            ))
-                      else
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _controller.play();
-                              });
-                            },
-                            icon: Icon(
-                              Icons.play_arrow,
-                              color: AppColors.white,
-                              size: 30.h,
-                            ))
-                    ],
+                    ),
                   ),
                 ),
               ),

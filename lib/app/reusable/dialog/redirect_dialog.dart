@@ -95,6 +95,18 @@ redirect(context, {UserNumber? data, String? number}) {
                         data != null ? "Update" : "Redirect",
                         style: typo.get12.w700.textColor(AppColors.xff1DAB61),
                       )),
+                  if (data == null)
+                    TextButton(
+                        onPressed: () async {
+                          String phoneNumber = c.phoneController.text;
+                          c.saveNumber(phoneNumber);
+
+                          Get.back();
+                        },
+                        child: Text(
+                          "Save",
+                          style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                        )),
                 ],
               ),
             ],

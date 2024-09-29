@@ -185,6 +185,33 @@ class _RedirectViewState extends State<RedirectView> {
 
           return Slidable(
             key: ValueKey(contact[index].number),
+            startActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              children: [
+                SlidableAction(
+                  flex: 1,
+                  onPressed: (context) {
+                    Get.find<RedirectController>()
+                        .launchSMS(contact[index].number ?? "");
+                  },
+                  backgroundColor: AppColors.xff1DAB61,
+                  foregroundColor: Colors.white,
+                  icon: Icons.chat,
+                ),
+                SlidableAction(
+                  flex: 1,
+                  borderRadius: const BorderRadius.horizontal(
+                      right: Radius.circular(100)),
+                  onPressed: (context) {
+                    Get.find<RedirectController>()
+                        .launchPhoneDial(contact[index].number ?? "");
+                  },
+                  backgroundColor: AppColors.xffdbfed4,
+                  foregroundColor: AppColors.xff1DAB61,
+                  icon: Icons.call,
+                ),
+              ],
+            ),
             endActionPane: ActionPane(
               motion: const ScrollMotion(),
               children: [

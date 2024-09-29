@@ -73,6 +73,49 @@ class RedirectController extends GetxController {
     }
   }
 
+  saveNumber(String phoneNumber) async {
+    if (phoneNumber.isNotEmpty) {
+      await saveUserNumberToDB(phoneNumber);
+      await getUserNumber();
+    }
+  }
+
+  Future<void> launchPhoneDial(String phoneNumber) async {
+    // Check if phone number starts with +91 or 91, remove the country code
+    if (phoneNumber.startsWith('+91')) {
+      phoneNumber = phoneNumber.substring(3);
+    } else if (phoneNumber.startsWith('91')) {
+      phoneNumber = phoneNumber.substring(2);
+    }
+
+    var phoneDialUrl = "tel:+91$phoneNumber";
+
+    try {
+      // Launch the phone dialer
+      await launchUrl(Uri.parse(phoneDialUrl));
+    } catch (e) {
+      showToast(e.toString()); // Handle errors
+    }
+  }
+
+  Future<void> launchSMS(String phoneNumber, {String message = 'Hi'}) async {
+    // Check if phone number starts with +91 or 91, remove the country code
+    if (phoneNumber.startsWith('+91')) {
+      phoneNumber = phoneNumber.substring(3);
+    } else if (phoneNumber.startsWith('91')) {
+      phoneNumber = phoneNumber.substring(2);
+    }
+
+    var smsUrl = "sms:+91$phoneNumber?body=$message";
+
+    try {
+      // Launch the SMS app
+      await launchUrl(Uri.parse(smsUrl));
+    } catch (e) {
+      showToast(e.toString()); // Handle errors
+    }
+  }
+
   void filterUserList(String query) {
     if (query.isEmpty) {
       filteredUserNumberList.value = getFilteredList();
