@@ -11,6 +11,8 @@ class UserNumber {
   String? number;
   Uint8List? imageUrl;
   String? userName;
+  String? origin;
+  String? code;
   bool? isSaved;
 
   UserNumber(
@@ -18,6 +20,8 @@ class UserNumber {
       this.createdAt,
       this.number,
       this.imageUrl,
+      this.origin,
+      this.code,
       this.userName,
       this.isSaved});
 
@@ -27,7 +31,8 @@ class UserNumber {
             ? null
             : DateTime.parse(json["CreatedAt"]),
         number: json["Number"],
-        userName: json["userName"],
+        origin: json["CountryOrigin"],
+        code: json["CountryCode"],
         imageUrl: json["imageUrl"],
         isSaved: json["isSaved"],
       );

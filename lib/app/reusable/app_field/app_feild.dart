@@ -37,7 +37,8 @@ class AppTextField extends StatelessWidget {
       keyboardType: keyboardType ?? TextInputType.number,
       cursorColor: const Color(0xff1daa61),
       onSubmitted: onSubmitted,
-      inputFormatters: numFormater ?? [FilteringTextInputFormatter.digitsOnly],
+      inputFormatters:
+          numFormater ?? [FilteringTextInputFormatter.allow(RegExp(r'[0-9+]'))],
       maxLength: maxLength,
       style: typo.get14.w400,
       autofocus: autofocus,

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../module/redirect/redirect_controller.dart';
-import '../module/saver/controllers/status_controller.dart';
+import '../controller/redirect_controller.dart';
+import '../controller/status_controller.dart';
 
 class InitialBinding extends Bindings {
   @override

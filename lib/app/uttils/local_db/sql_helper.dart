@@ -28,7 +28,7 @@ class DbHelper {
 
   initDataBase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, "whatsDB");
+    String path = join(documentDirectory.path, "whats_redirect.db");
     return await openDatabase(path, version: dbVersion, onCreate: _onCreate);
   }
 
@@ -39,6 +39,8 @@ class DbHelper {
       CREATE TABLE USER_NUMBER (
       dbId INTEGER PRIMARY KEY AUTOINCREMENT,
       CreatedAt TEXT,
+      CountryOrigin TEXT,
+      CountryCode TEXT,
       Number TEXT
       )
       ''');

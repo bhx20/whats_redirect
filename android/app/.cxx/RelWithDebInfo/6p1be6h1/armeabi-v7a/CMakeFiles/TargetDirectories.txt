@@ -1,0 +1,2 @@
+D:/Sanket/whats_redirect/android/app/.cxx/RelWithDebInfo/6p1be6h1/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/Sanket/whats_redirect/android/app/.cxx/RelWithDebInfo/6p1be6h1/armeabi-v7a/CMakeFiles/rebuild_cache.dir

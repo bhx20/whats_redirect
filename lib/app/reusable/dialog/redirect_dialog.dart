@@ -1,28 +1,61 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:redirect/app/controller/redirect_controller.dart';
 import 'package:redirect/app/core/app_colors.dart';
 import 'package:redirect/app/core/app_typography.dart';
-import 'package:redirect/app/module/redirect/redirect_controller.dart';
 
+import '../../model/local.dart';
 import '../../model/user_number_model.dart';
 import '../../uttils/local_db/prefrances.dart';
 import '../app_field/app_feild.dart';
 
 redirect(context, {UserNumber? data, String? number}) {
-  redirectDialog(UserNumber? data) {
-    TextEditingController dialogController =
-        TextEditingController(text: data != null ? data.number : "");
-    TextEditingController autoController =
-        TextEditingController(text: number ?? "");
-    FocusNode inputNode = FocusNode();
-    FocusScope.of(context).requestFocus(inputNode);
-    var c = Get.put(RedirectController());
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return RedirectWidget(data: data, number: number);
+    },
+  );
+}
+
+class RedirectWidget extends StatefulWidget {
+  final UserNumber? data;
+  final String? number;
+
+  const RedirectWidget({super.key, this.data, this.number});
+
+  @override
+  State<RedirectWidget> createState() => _RedirectWidgetState();
+}
+
+class _RedirectWidgetState extends State<RedirectWidget> {
+  late TextEditingController dialogController;
+  late TextEditingController autoController;
+  var c = Get.put(RedirectController());
+  String initialSelection = 'IN';
+  @override
+  void initState() {
+    dialogController = TextEditingController(
+        text: widget.data != null ? widget.data?.number : "");
+    autoController = TextEditingController(text: widget.number ?? "");
+
+    if (widget.data != null) {
+      initialSelection = widget.data?.origin ?? "IN";
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (value, data) async {
-        if (number != null) {
-          await PreferenceHelper.instance.setData(Pref.lastShownNumber, number);
+        if (widget.number != null) {
+          await PreferenceHelper.instance
+              .setData(Pref.lastShownNumber, widget.number);
         }
       },
       child: Dialog(
@@ -35,19 +68,18 @@ redirect(context, {UserNumber? data, String? number}) {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text(data != null ? 'Edit Number' : "Redirect Number",
-                  style: typo.get18),
+              Text(widget.data != null ? 'Edit Number' : "Redirect Number",
+                  style: typo.get15),
               SizedBox(height: 10.h),
               AppTextField(
-                prefix: const Icon(Icons.person_add_outlined),
-                controller: number != null
+                prefix: countryCode(),
+                controller: widget.number != null
                     ? autoController
-                    : data != null
+                    : widget.data != null
                         ? dialogController
                         : c.phoneController,
                 hintText: "Phone Number",
                 autofocus: true,
-                focusNode: inputNode,
                 maxLength: 15,
               ),
               SizedBox(height: 10.h),
@@ -56,9 +88,9 @@ redirect(context, {UserNumber? data, String? number}) {
                 children: [
                   TextButton(
                       onPressed: () async {
-                        if (number != null) {
+                        if (widget.number != null) {
                           await PreferenceHelper.instance
-                              .setData(Pref.lastShownNumber, number);
+                              .setData(Pref.lastShownNumber, widget.number);
                         }
 
                         Get.back();
@@ -69,38 +101,47 @@ redirect(context, {UserNumber? data, String? number}) {
                       )),
                   TextButton(
                       onPressed: () async {
-                        if (number != null) {
-                          String phoneNumber = autoController.text;
+                        if (widget.number != null) {
                           await PreferenceHelper.instance
-                              .setData(Pref.lastShownNumber, number);
-
-                          c.launchWhatsApp(phoneNumber);
+                              .setData(Pref.lastShownNumber, widget.number);
+                          NumberData data = NumberData(
+                              number: autoController.text,
+                              origin: c.selectedCountryOrigin.value,
+                              code: c.selectedCountryCode.value);
+                          c.launchWhatsApp(data);
                         } else {
-                          if (data != null) {
+                          if (widget.data != null) {
                             Map<String, dynamic> row = {
                               "Number": dialogController.text,
+                              "CountryOrigin": c.selectedCountryOrigin.value,
+                              "CountryCode": c.selectedCountryCode.value
                             };
-                            c.dbHelper
-                                .update("USER_NUMBER", data.dbId ?? 0, row);
+                            c.dbHelper.update(
+                                "USER_NUMBER", widget.data?.dbId ?? 0, row);
                             c.getUserNumber();
                           } else {
-                            String phoneNumber = c.phoneController.text;
-                            c.launchWhatsApp(phoneNumber);
+                            NumberData data = NumberData(
+                                number: c.phoneController.text,
+                                origin: c.selectedCountryOrigin.value,
+                                code: c.selectedCountryCode.value);
+                            c.launchWhatsApp(data);
                           }
                         }
 
                         Get.back();
                       },
                       child: Text(
-                        data != null ? "Update" : "Redirect",
+                        widget.data != null ? "Update" : "Redirect",
                         style: typo.get12.w700.textColor(AppColors.xff1DAB61),
                       )),
-                  if (data == null)
+                  if (widget.data == null)
                     TextButton(
                         onPressed: () async {
-                          String phoneNumber = c.phoneController.text;
-                          c.saveNumber(phoneNumber);
-
+                          NumberData data = NumberData(
+                              number: c.phoneController.text,
+                              origin: c.selectedCountryOrigin.value,
+                              code: c.selectedCountryCode.value);
+                          c.saveNumber(data);
                           Get.back();
                         },
                         child: Text(
@@ -116,13 +157,44 @@ redirect(context, {UserNumber? data, String? number}) {
     );
   }
 
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return redirectDialog(
-        data,
-      );
-    },
-  );
+  Widget countryCode() {
+    return CountryCodePicker(
+      onChanged: (code) {
+        c.selectedCountryCode(code.dialCode);
+        c.selectedCountryOrigin(code.code);
+      },
+      initialSelection: initialSelection,
+      showFlag: true,
+      hideSearch: true,
+      textStyle: typo.black.bold,
+      flagWidth: 20,
+      barrierColor: AppColors.trans,
+      headerText: "Select Country Code",
+      headerTextStyle: typo.get13.w500,
+      boxDecoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(30)),
+      margin: const EdgeInsets.symmetric(horizontal: 6),
+      favorite: ["IN", "US", "GB", "CA", "AU"],
+      comparator: (a, b) => b.name!.compareTo(a.name!),
+      builder: (v) {
+        return SizedBox(
+            width: 60.w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Center(
+                    child: Text(
+                  v?.dialCode ?? "",
+                  style: typo.bold,
+                )),
+                Icon(Icons.arrow_drop_down_outlined)
+              ],
+            ));
+      },
+      onInit: (code) {
+        c.selectedCountryCode(code?.dialCode);
+        c.selectedCountryOrigin(code?.code);
+      },
+    );
+  }
 }

@@ -21,3 +21,11 @@ class MoreItem {
   final String title;
   MoreItem({required this.icon, required this.title});
 }
+
+class NumberData {
+  final String number;
+  final String origin;
+  final String code;
+
+  NumberData({required this.number, required this.origin, required this.code});
+}

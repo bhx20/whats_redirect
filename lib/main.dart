@@ -5,9 +5,9 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:redirect/app/uttils/local_db/sql_helper.dart';
 
 import 'app/core/app_typography.dart';
-import 'app/module/dashboard/dashBoard_view.dart';
 import 'app/reusable/initial_binding.dart';
 import 'app/uttils/local_db/prefrances.dart';
+import 'app/view/dashboard/dashBoard_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
