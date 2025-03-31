@@ -197,11 +197,13 @@ class StatusController extends GetxController {
   }
 
   downloadImage(String imgPath) async {
+    Get.back();
     await Gal.putImage(imgPath);
     showToast("Image Downloaded Successfully");
   }
 
   downloadVideo(File file) async {
+    Get.back();
     await Gal.putVideo(file.path);
 
     showToast("Video Downloaded Successfully");
@@ -230,6 +232,7 @@ class StatusController extends GetxController {
         final imageFileName = imgPath.split('/').last;
         final newImagePath = '${directory.path}/$imageFileName';
         await file.copy(newImagePath);
+        Get.back();
         Share.shareXFiles([XFile(newImagePath)]);
       } else {
         showToast("Image file not found");
@@ -247,6 +250,7 @@ class StatusController extends GetxController {
         final imageFileName = videoPath.split('/').last;
         final newImagePath = '${directory.path}/$imageFileName';
         await file.copy(newImagePath);
+        Get.back();
         Share.shareXFiles([XFile(newImagePath)]);
       } else {
         showToast("video file not found");

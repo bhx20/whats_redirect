@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,67 +46,74 @@ class _OpenVideoWidgetState extends State<OpenVideoWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: GestureDetector(
-          onTap: () {
-            Get.back();
-          },
-          child: Stack(
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                child: Container(
-                  color: Colors.white.withOpacity(0.1),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: InkWell(
-                      onTap: () {
-                        if (_controller.value.isPlaying) {
-                          _controller.pause();
-                        } else {
-                          _controller.play();
-                        }
-                      },
-                      child: AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
-                        child: VideoPlayer(_controller),
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
+      height: Get.height * 0.8,
+      child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                child: Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.h),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: InkWell(
+                          onTap: () {
+                            if (_controller.value.isPlaying) {
+                              _controller.pause();
+                            } else {
+                              _controller.play();
+                            }
+                          },
+                          child: AspectRatio(
+                            aspectRatio: _controller.value.aspectRatio,
+                            child: VideoPlayer(_controller),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-        bottomNavigationBar:
-            GetBuilder<StatusController>(builder: (controller) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ActionIcon(
-                Icons.download,
-                size: 20.h,
-                onTap: () {
-                  controller.downloadVideo(widget.file);
-                },
+          bottomNavigationBar:
+              GetBuilder<StatusController>(builder: (controller) {
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ActionIcon(
+                    Icons.download,
+                    title: "Download",
+                    onTap: () {
+                      controller.downloadVideo(widget.file);
+                    },
+                  ),
+                  ActionIcon(
+                    Icons.share,
+                    title: "Share",
+                    onTap: () {
+                      Get.back();
+                      controller.shareVideo(widget.file.path);
+                    },
+                  )
+                ],
               ),
-              ActionIcon(
-                Icons.share,
-                size: 20.h,
-                onTap: () {
-                  Get.back();
-                  controller.shareVideo(widget.file.path);
-                },
-              )
-            ],
-          );
-        }));
+            );
+          })),
+    );
   }
 
   @override

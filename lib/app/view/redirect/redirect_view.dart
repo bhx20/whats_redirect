@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -274,6 +276,13 @@ class _RedirectViewState extends State<RedirectView> {
   Widget _buildNumberTile(List<UserNumber> contact, int index,
       String formattedTime, String formattedDate) {
     var data = contact[index];
+    var c = Get.find<RedirectController>();
+    Color getRandomColor() {
+      final random = Random();
+      return c.contactColorList[random.nextInt(c.contactColorList.length)];
+    }
+
+    Color leadingColor = getRandomColor();
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: GestureDetector(
@@ -293,14 +302,20 @@ class _RedirectViewState extends State<RedirectView> {
                   children: [
                     CircleAvatar(
                       radius: 25,
-                      backgroundColor: AppColors.xfff6f5f3,
+                      backgroundColor: leadingColor.withOpacity(0.15),
                       child: data.imageUrl != null
                           ? ClipOval(child: Image.memory(data.imageUrl!))
-                          : Icon(
-                              Icons.person_rounded,
-                              color: AppColors.xff7b7a78,
-                              size: 24,
-                            ),
+                          : data.userName == "Unknown"
+                              ? Icon(
+                                  Icons.person_rounded,
+                                  color: leadingColor,
+                                  size: 24,
+                                )
+                              : Text(
+                                  data.userName?[0] ?? "",
+                                  style:
+                                      typo.get20.bold.textColor(leadingColor),
+                                ),
                     ),
                     SizedBox(width: 10.w),
                     Column(

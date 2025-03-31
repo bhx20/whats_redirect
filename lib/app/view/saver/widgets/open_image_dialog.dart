@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,60 +27,59 @@ class OpenImageDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.h),
-          child: GetBuilder<StatusController>(builder: (controller) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ActionIcon(
-                  Icons.download,
-                  size: 20.h,
-                  onTap: () {
-                    controller.downloadImage(imagePath);
-                  },
-                ),
-                ActionIcon(
-                  Icons.share,
-                  size: 20.h,
-                  onTap: () {
-                    Get.back();
-                    controller.shareImage(imagePath);
-                  },
-                )
-              ],
-            );
-          })),
-      body: InkWell(
-        onTap: () {
-          Get.back();
-        },
-        child: Stack(
-          children: [
-            BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-              child: Container(
-                color: Colors.white.withOpacity(0.1),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
+      height: Get.height * 0.8,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        bottomNavigationBar: Padding(
+            padding: EdgeInsets.symmetric(vertical: 10.h),
+            child: GetBuilder<StatusController>(builder: (controller) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.file(
-                      File(imagePath),
-                      fit: BoxFit.contain,
+                  ActionIcon(
+                    Icons.download,
+                    title: "Download",
+                    onTap: () {
+                      controller.downloadImage(imagePath);
+                    },
+                  ),
+                  ActionIcon(
+                    Icons.share,
+                    title: "Share",
+                    onTap: () {
+                      Get.back();
+                      controller.shareImage(imagePath);
+                    },
+                  )
+                ],
+              );
+            })),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.w).copyWith(top: 5.h),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.all(20.h),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Image.file(
+                        File(imagePath),
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

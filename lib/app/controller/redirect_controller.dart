@@ -30,6 +30,31 @@ class RedirectController extends GetxController {
     filteredUserNumberList.value = userNumberList;
   }
 
+  List<Color> contactColorList = [
+    Color(0xff5E5B8C),
+    Color(0xff283659),
+    Color(0xff586E4D),
+    Color(0xff84544E),
+    Color(0xff7543AF),
+    Color(0xffD37BCE),
+    Color(0xffF200EE),
+    Color(0xff4B8A4E),
+    Color(0xff365947),
+    Color(0xffDE8A66),
+    Color(0xffB34554),
+    Color(0xff3A3F6B),
+    Color(0xff6B9CA8),
+    Color(0xff524B6C),
+    Color(0xffE5D270),
+    Color(0xff95376A),
+    Color(0xff7E3982),
+    Color(0xff382060),
+    Color(0xff239D29),
+    Color(0xff2567B8),
+    Color(0xffE69705),
+    Color(0xffED9AA5),
+  ];
+
   @override
   void onClose() {
     searchController.dispose();

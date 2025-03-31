@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:redirect/app/reusable/icon/action_icon.dart';
 import 'package:redirect/app/reusable/loader/simmer.dart';
 
 import '../../../controller/status_controller.dart';
@@ -28,8 +27,8 @@ class MediaView extends StatelessWidget {
                     Expanded(
                       child: GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 2 / 3,
+                          crossAxisCount: 4,
+                          childAspectRatio: 1 / 1,
                           crossAxisSpacing: 5.h,
                           mainAxisSpacing: 5.h,
                         ),
@@ -97,13 +96,16 @@ class MediaView extends StatelessWidget {
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          childAspectRatio: 2 / 3,
+          childAspectRatio: 1 / 1,
           crossAxisSpacing: 5.h,
           mainAxisSpacing: 5.h,
         ),
-        itemCount: 10,
+        itemCount: 20,
         itemBuilder: (BuildContext context, int index) {
-          return const SimmerLoader(radius: 10);
+          return Padding(
+            padding: EdgeInsets.all(5.h),
+            child: const SimmerLoader(radius: 100),
+          );
         },
       ),
     );
@@ -112,23 +114,10 @@ class MediaView extends StatelessWidget {
   Widget _buildMediaItem(BuildContext context, File file, bool isVideo,
       StatusController controller) {
     Widget imageView(File file) {
-      return Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.file(
-            file,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.low,
-          ),
-          Align(
-              alignment: Alignment.topRight,
-              child: ActionIcon(
-                Icons.download,
-                onTap: () {
-                  controller.downloadImage(file.path);
-                },
-              )),
-        ],
+      return Image.file(
+        file,
+        fit: BoxFit.cover,
+        filterQuality: FilterQuality.low,
       );
     }
 
@@ -163,21 +152,14 @@ class MediaView extends StatelessWidget {
                   fit: BoxFit.cover,
                   filterQuality: FilterQuality.low,
                 ),
-                Align(
-                    alignment: Alignment.topRight,
-                    child: ActionIcon(
-                      Icons.download,
-                      onTap: () {
-                        controller.downloadVideo(file);
-                      },
-                    )),
                 Icon(
                   Icons.play_arrow,
-                  color: Colors.white,
-                  size: 35.h,
+                  color: AppColors.white,
+                  size: 20.h,
                 )
               ],
             );
+            ;
           }
         },
       );
@@ -187,9 +169,17 @@ class MediaView extends StatelessWidget {
       onTap: () {
         controller.openMedia(context, file, isVideo);
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: isVideo ? videoView(file) : imageView(file),
+      child: Container(
+        margin: EdgeInsets.all(2.h),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColors.xff1DAB61, width: 2.5)),
+        child: Padding(
+          padding: EdgeInsets.all(1.5.h),
+          child: ClipOval(
+            child: isVideo ? videoView(file) : imageView(file),
+          ),
+        ),
       ),
     );
   }
