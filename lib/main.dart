@@ -6,6 +6,7 @@ import 'package:redirect/app/uttils/local_db/sql_helper.dart';
 
 import 'app/core/app_typography.dart';
 import 'app/reusable/initial_binding.dart';
+import 'app/reusable/scroll_behavior/scroll_behavior.dart';
 import 'app/uttils/local_db/prefrances.dart';
 import 'app/view/dashboard/dashBoard_view.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           title: 'WhatsApp Redirect',
+          scrollBehavior: CustomScrollBehavior(),
           theme: ThemeData(fontFamily: TextFontFamily.roboto),
           debugShowCheckedModeBanner: false,
           initialBinding: InitialBinding(),

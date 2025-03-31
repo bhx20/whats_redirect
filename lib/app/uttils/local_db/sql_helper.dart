@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
-  static const dbVersion = 1;
+  static const dbVersion = 2;
   static Database? _database;
 
 /*----------> For avoid the multiple class instance and this lines of
