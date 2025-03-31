@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
@@ -30,29 +31,52 @@ class RedirectController extends GetxController {
     filteredUserNumberList.value = userNumberList;
   }
 
-  List<Color> contactColorList = [
-    Color(0xff5E5B8C),
-    Color(0xff283659),
-    Color(0xff586E4D),
-    Color(0xff84544E),
-    Color(0xff7543AF),
-    Color(0xffD37BCE),
-    Color(0xffF200EE),
-    Color(0xff4B8A4E),
-    Color(0xff365947),
-    Color(0xffDE8A66),
-    Color(0xffB34554),
-    Color(0xff3A3F6B),
-    Color(0xff6B9CA8),
-    Color(0xff524B6C),
-    Color(0xffE5D270),
-    Color(0xff95376A),
-    Color(0xff7E3982),
-    Color(0xff382060),
-    Color(0xff239D29),
-    Color(0xff2567B8),
-    Color(0xffE69705),
-    Color(0xffED9AA5),
+  List<String> contactColorHexList = [
+    "B5B2D6",
+    "8A9ABB",
+    "ABB88F",
+    "C09A97",
+    "A985D6",
+    "D8A7D0",
+    "E089E0",
+    "8DB88C",
+    "7BA68E",
+    "DBB79E",
+    "CF848E",
+    "808CAB",
+    "A4CBD3",
+    "9184A6",
+    "E0D8A3",
+    "BD7C9F",
+    "B078AD",
+    "7153A8",
+    "6DC470",
+    "85B0D6",
+    "E0B86A",
+    "E5B4B8",
+    "E3C3BE",
+    "C3DBA0",
+    "B6D4DE",
+    "E2BFD1",
+    "D5C7E5",
+    "E0D1BE",
+    "C2E5C5",
+    "E6C07D",
+    "DAA7C5",
+    "BFD4E4",
+    "A3D1A8",
+    "E1B28C",
+    "C9C5E6",
+    "A2D0C4",
+    "E1A3BA",
+    "E3ADC8",
+    "ADC9E6",
+    "A0D1BD",
+    "E9C1B6",
+    "C7DA85",
+    "E5C29F",
+    "CCABE0",
+    "8AD5D7",
   ];
 
   @override
@@ -242,11 +266,17 @@ class RedirectController extends GetxController {
   }
 
   Future<void> saveUserNumberToDB(NumberData data) async {
+    String getRandomColor() {
+      final random = Random();
+      return contactColorHexList[random.nextInt(contactColorHexList.length)];
+    }
+
     Map<String, dynamic> row = {
       "CreatedAt": DateTime.now().toString(),
       "CountryOrigin": data.origin,
       "CountryCode": data.code,
       "Number": data.number,
+      "Color": getRandomColor(),
     };
     await dbHelper.insert("USER_NUMBER", row);
   }

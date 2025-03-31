@@ -9,6 +9,7 @@ class UserNumber {
   int? dbId;
   DateTime? createdAt;
   String? number;
+  String? leadingColor;
   Uint8List? imageUrl;
   String? userName;
   String? origin;
@@ -20,6 +21,7 @@ class UserNumber {
       this.createdAt,
       this.number,
       this.imageUrl,
+      this.leadingColor,
       this.origin,
       this.code,
       this.userName,
@@ -35,5 +37,6 @@ class UserNumber {
         code: json["CountryCode"],
         imageUrl: json["imageUrl"],
         isSaved: json["isSaved"],
+        leadingColor: json["Color"],
       );
 }

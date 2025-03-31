@@ -41,6 +41,7 @@ class DbHelper {
       CreatedAt TEXT,
       CountryOrigin TEXT,
       CountryCode TEXT,
+      Color TEXT,
       Number TEXT
       )
       ''');

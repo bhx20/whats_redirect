@@ -34,7 +34,7 @@ class SimmerLoader extends StatelessWidget {
       child: Container(
         margin: margin,
         width: width ?? Get.width,
-        height: 50.h,
+        height: height ?? 50.h,
         decoration: BoxDecoration(
           color: decorationColor ?? AppColors.white,
           borderRadius: BorderRadius.circular(radius ?? 5),

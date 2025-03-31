@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -152,9 +150,58 @@ class _RedirectViewState extends State<RedirectView> {
       child: Column(
         children: List.generate(
             15,
-            (i) => SimmerLoader(
+            (i) => Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.w)
-                      .copyWith(bottom: 10.h),
+                      .copyWith(bottom: 10.h, top: 10.h),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 25,
+                              child: SimmerLoader(
+                                radius: 100,
+                              ),
+                            ),
+                            SizedBox(width: 10.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SimmerLoader(
+                                  height: 18,
+                                  width: 100,
+                                  radius: 0,
+                                ),
+                                SizedBox(height: 8.w),
+                                SimmerLoader(
+                                  height: 8,
+                                  width: 150,
+                                  radius: 0,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SimmerLoader(
+                            height: 12,
+                            width: 55,
+                            radius: 0,
+                          ),
+                          SizedBox(height: 8.w),
+                          SimmerLoader(
+                            height: 12,
+                            width: 80,
+                            radius: 0,
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 )),
       ),
     );
@@ -276,13 +323,12 @@ class _RedirectViewState extends State<RedirectView> {
   Widget _buildNumberTile(List<UserNumber> contact, int index,
       String formattedTime, String formattedDate) {
     var data = contact[index];
-    var c = Get.find<RedirectController>();
-    Color getRandomColor() {
-      final random = Random();
-      return c.contactColorList[random.nextInt(c.contactColorList.length)];
+    Color hexToColor(String hexCode) {
+      return Color(
+          int.parse(hexCode.replaceFirst('#', ''), radix: 16) + 0xFF000000);
     }
 
-    Color leadingColor = getRandomColor();
+    Color leadingColor = hexToColor(contact[index].leadingColor ?? "C4A5ED");
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: GestureDetector(
@@ -302,7 +348,7 @@ class _RedirectViewState extends State<RedirectView> {
                   children: [
                     CircleAvatar(
                       radius: 25,
-                      backgroundColor: leadingColor.withOpacity(0.15),
+                      backgroundColor: leadingColor.withOpacity(0.3),
                       child: data.imageUrl != null
                           ? ClipOval(child: Image.memory(data.imageUrl!))
                           : data.userName == "Unknown"
@@ -325,7 +371,7 @@ class _RedirectViewState extends State<RedirectView> {
                           data.userName ?? "Unknown",
                           selectionColor: Colors.white,
                           maxLines: 1,
-                          style: typo.w700.get14,
+                          style: typo.w500.get14,
                         ),
                         Text(
                           "${data.code} ${data.number ?? " "}",
