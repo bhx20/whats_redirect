@@ -6,7 +6,6 @@ import 'package:redirect/app/core/app_colors.dart';
 import 'package:redirect/app/reusable/generated_scaffold.dart';
 
 import '../../controller/dashBoard_controller.dart';
-import '../../core/app_typography.dart';
 import '../../reusable/dialog/redirect_dialog.dart';
 import '../../reusable/dialog/warning_dialog.dart';
 import '../../uttils/local_db/prefrances.dart';
@@ -58,29 +57,16 @@ class _DashBoardViewState extends State<DashBoardView> {
               }
             },
             child: AppScaffold(
-              bottomNavigationBar: NavigationBarTheme(
-                data: NavigationBarThemeData(
-                  backgroundColor: AppColors.white,
-                  indicatorColor: AppColors.xffdbfed4,
-                  elevation: 0,
-                  labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>(
-                    (Set<WidgetState> states) {
-                      if (states.contains(WidgetState.selected)) {
-                        return typo.w700.get11;
-                      }
-                      return typo.w500.get11;
-                    },
+              bottomNavigationBar: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Divider(
+                    height: 0,
+                    color: Colors.grey.withOpacity(0.1),
                   ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Divider(
-                      height: 0,
-                      color: Colors.grey.withOpacity(0.1),
-                    ),
-                    NavigationBar(
+                  Obx(
+                    () => NavigationBar(
                       selectedIndex: c.currentPageIndex.value,
                       onDestinationSelected: (int index) {
                         c.currentPageIndex(index);
@@ -91,28 +77,32 @@ class _DashBoardViewState extends State<DashBoardView> {
                           selectedIcon: Image.asset(
                             "assets/redirect_fill.png",
                             height: 13.h,
+                            color: appColors.indicatorIcon,
                           ),
                           icon: Image.asset(
                             "assets/redirect.png",
                             height: 13.h,
+                            color: appColors.unfocusedIndicatorIcon,
                           ),
                           label: 'What\'s Redirect',
                         ),
                         NavigationDestination(
-                          icon: Image.asset(
-                            "assets/saver.png",
-                            height: 22.h,
-                          ),
                           selectedIcon: Image.asset(
                             "assets/saver_fill.png",
                             height: 22.h,
+                            color: appColors.indicatorIcon,
+                          ),
+                          icon: Image.asset(
+                            "assets/saver.png",
+                            height: 22.h,
+                            color: appColors.unfocusedIndicatorIcon,
                           ),
                           label: 'What\'s Saver',
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
               body: [
                 const RedirectView(),

@@ -70,8 +70,8 @@ class MediaView extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 color: c.selectedCategory.value == index
-                    ? AppColors.xffdbfed4
-                    : AppColors.xfff6f5f3,
+                    ? appColors.filterBg
+                    : appColors.unfocusedFilterBg,
                 borderRadius: BorderRadius.circular(100)),
             margin: EdgeInsets.symmetric(vertical: 15.h, horizontal: 3.w),
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
@@ -80,8 +80,8 @@ class MediaView extends StatelessWidget {
               c.filterList[index],
               style: typo.w500.textColor(
                 c.selectedCategory.value == index
-                    ? AppColors.xff185E3C
-                    : AppColors.xff7b7a78,
+                    ? appColors.filterTitle
+                    : appColors.unfocusedFilterTitle,
               ),
             )),
           ),
@@ -95,7 +95,7 @@ class MediaView extends StatelessWidget {
       margin: EdgeInsets.all(5.h),
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: 4,
           childAspectRatio: 1 / 1,
           crossAxisSpacing: 5.h,
           mainAxisSpacing: 5.h,
@@ -154,7 +154,7 @@ class MediaView extends StatelessWidget {
                 ),
                 Icon(
                   Icons.play_arrow,
-                  color: AppColors.white,
+                  color: appColors.white,
                   size: 20.h,
                 )
               ],
@@ -173,7 +173,7 @@ class MediaView extends StatelessWidget {
         margin: EdgeInsets.all(2.h),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: AppColors.xff1DAB61, width: 2.5)),
+            border: Border.all(color: appColors.xff1DAB61, width: 2.5)),
         child: Padding(
           padding: EdgeInsets.all(1.5.h),
           child: ClipOval(

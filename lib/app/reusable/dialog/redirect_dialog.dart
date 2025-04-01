@@ -59,8 +59,6 @@ class _RedirectWidgetState extends State<RedirectWidget> {
         }
       },
       child: Dialog(
-        elevation: 0.0,
-        backgroundColor: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -97,7 +95,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
                       },
                       child: Text(
                         "Cancel",
-                        style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                        style: typo.get12.w700.textColor(appColors.xff1DAB61),
                       )),
                   TextButton(
                       onPressed: () async {
@@ -132,7 +130,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
                       },
                       child: Text(
                         widget.data != null ? "Update" : "Redirect",
-                        style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                        style: typo.get12.w700.textColor(appColors.xff1DAB61),
                       )),
                   if (widget.data == null)
                     TextButton(
@@ -146,7 +144,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
                         },
                         child: Text(
                           "Save",
-                          style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                          style: typo.get12.w700.textColor(appColors.xff1DAB61),
                         )),
                 ],
               ),
@@ -168,11 +166,11 @@ class _RedirectWidgetState extends State<RedirectWidget> {
       hideSearch: true,
       textStyle: typo.black.bold,
       flagWidth: 20,
-      barrierColor: AppColors.trans,
+      barrierColor: appColors.trans,
       headerText: "Select Country Code",
       headerTextStyle: typo.get13.w500,
       boxDecoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(30)),
+          color: appColors.dialogBG, borderRadius: BorderRadius.circular(30)),
       margin: const EdgeInsets.symmetric(horizontal: 6),
       favorite: ["IN", "US", "GB", "CA", "AU"],
       comparator: (a, b) => b.name!.compareTo(a.name!),

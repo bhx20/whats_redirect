@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:redirect/app/core/app_typography.dart';
+import 'package:redirect/app/reusable/menu/dashboard_manu.dart';
 import 'package:redirect/app/view/saver/widgets/media_view.dart';
 import 'package:redirect/app/view/saver/widgets/permission_view.dart';
 
 import '../../controller/status_controller.dart';
-import '../../core/app_colors.dart';
-import '../../reusable/dialog/warning_dialog.dart';
 import '../../reusable/generated_scaffold.dart';
-import '../../reusable/loader/simmer.dart';
 
 class StatusView extends StatefulWidget {
   const StatusView({super.key});
@@ -76,30 +74,12 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
                   return _errorView(controller);
                 }
               } else {
-                return _loadingView();
+                return SizedBox();
               }
             },
           ),
         );
       },
-    );
-  }
-
-  Widget _loadingView() {
-    return Container(
-      margin: EdgeInsets.all(5.h),
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 2 / 3,
-          crossAxisSpacing: 5.h,
-          mainAxisSpacing: 5.h,
-        ),
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) {
-          return const SimmerLoader(radius: 10);
-        },
-      ),
     );
   }
 
@@ -121,7 +101,7 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
                 onPressed: () {
                   controller.getStatusData();
                 },
-                icon: const Icon(Icons.refresh, color: Color(0xff54656f)),
+                icon: const Icon(Icons.refresh),
               ),
             ],
           ),
@@ -132,61 +112,17 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
 
   AppBar _topBar(StatusController c) {
     return AppBar(
-      surfaceTintColor: Colors.transparent,
-      backgroundColor: Colors.white,
-      title: const Text(
+      title: Text(
         'What\'s Saver',
-        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff1daa61)),
+        style: Theme.of(context).textTheme.titleMedium,
       ),
       actions: [
         if (isMore.isTrue)
           IconButton(
             onPressed: () {
-              showMenu(
-                color: AppColors.white,
-                context: Get.context!,
-                elevation: 0.5,
-                position: const RelativeRect.fromLTRB(0, 0, -100, 0),
-                items: c.items.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  var item = entry.value;
-
-                  return PopupMenuItem<int>(
-                    value: index + 1,
-                    onTap: () {
-                      if (index == 0) {
-                        Get.back();
-                        isMore(true);
-                        c.getStatusData();
-                      } else if (index == 1) {
-                        Get.back();
-                        c.help();
-                      } else {
-                        warningDialog(context);
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 10.h, left: 5.h),
-                          child: Icon(
-                            item.icon,
-                            size: 15.h,
-                            color: AppColors.xff185E3C,
-                          ),
-                        ),
-                        Text(
-                          item.title,
-                          style: typo.get10.black.w700,
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              );
+              showDashBoardManu();
             },
-            icon:
-                const Icon(Icons.more_vert_outlined, color: Color(0xff54656f)),
+            icon: const Icon(Icons.more_vert_outlined),
           ),
       ],
     );

@@ -9,7 +9,6 @@ class AppScaffold extends StatelessWidget {
   final Widget? body;
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
-  final Color? backgroundColor;
   final Color? statusBarColor;
   final Color? backGroundColor;
 
@@ -20,7 +19,6 @@ class AppScaffold extends StatelessWidget {
       this.body,
       this.floatingActionButton,
       this.bottomNavigationBar,
-      this.backgroundColor,
       this.statusBarColor,
       this.backGroundColor});
 
@@ -29,7 +27,7 @@ class AppScaffold extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,
-        statusBarColor: statusBarColor ?? AppColors.white,
+        statusBarColor: statusBarColor ?? appColors.white,
       ),
       child: SafeArea(
         child: Scaffold(
@@ -38,7 +36,6 @@ class AppScaffold extends StatelessWidget {
           body: body,
           floatingActionButton: floatingActionButton,
           bottomNavigationBar: bottomNavigationBar,
-          backgroundColor: backgroundColor ?? AppColors.white,
         ),
       ),
     );

@@ -8,8 +8,6 @@ class SimmerLoader extends StatelessWidget {
   final double? height;
   final double? width;
   final double? radius;
-  final Color? baseColor;
-  final Color? highlightColor;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final Color? decorationColor;
@@ -19,8 +17,6 @@ class SimmerLoader extends StatelessWidget {
     this.height,
     this.width,
     this.radius,
-    this.baseColor,
-    this.highlightColor,
     this.padding,
     this.margin,
     this.decorationColor,
@@ -29,14 +25,14 @@ class SimmerLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: baseColor ?? AppColors.xfff6f5f3,
-      highlightColor: highlightColor ?? AppColors.white,
+      baseColor: appColors.simmerBase,
+      highlightColor: appColors.simmerHighLight,
       child: Container(
         margin: margin,
         width: width ?? Get.width,
         height: height ?? 50.h,
         decoration: BoxDecoration(
-          color: decorationColor ?? AppColors.white,
+          color: decorationColor ?? appColors.simmerHighLight,
           borderRadius: BorderRadius.circular(radius ?? 5),
         ),
       ),

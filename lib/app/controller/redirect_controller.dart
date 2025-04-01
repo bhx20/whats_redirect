@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../model/local.dart';
 import '../model/user_number_model.dart';
 import '../reusable/globle.dart';
+import '../reusable/theme_service/theme_service.dart';
 import '../uttils/local_db/sql_helper.dart';
 
 class RedirectController extends GetxController {
@@ -22,6 +23,11 @@ class RedirectController extends GetxController {
   RxString selectedCountryCode = "+91".obs;
   RxString selectedCountryOrigin = "IN".obs;
   RxBool permissionDenied = false.obs;
+  final themeService = ThemeService.instance;
+
+  Future<void> setTheme(ThemeMode mode) async {
+    themeService.setTheme(mode);
+  }
 
   List<String> filterList = ["All", "Saved", "Unsaved"];
 

@@ -10,8 +10,6 @@ import '../../core/app_typography.dart';
 warningDialog(context) {
   warningView() {
     return Dialog(
-      elevation: 0.0,
-      backgroundColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -30,7 +28,7 @@ warningDialog(context) {
                     },
                     child: Text(
                       "Yes",
-                      style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
                     )),
                 TextButton(
                     onPressed: () {
@@ -38,7 +36,7 @@ warningDialog(context) {
                     },
                     child: Text(
                       "No",
-                      style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
                     )),
               ],
             ),

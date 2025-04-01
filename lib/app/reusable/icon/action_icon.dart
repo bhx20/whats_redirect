@@ -24,20 +24,20 @@ class ActionIcon extends StatelessWidget {
         height: 30.h,
         width: 120.w,
         decoration: BoxDecoration(
-            color: AppColors.xffdbfed4,
+            color: appColors.secondarySlideBg,
             borderRadius: BorderRadius.circular(20)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: AppColors.xff185E3C,
+              color: appColors.secondarySlideTitle,
               size: 13.h,
             ),
             SizedBox(width: 8.w),
             Text(
               title,
-              style: typo.w500.textColor(AppColors.xff185E3C).get12,
+              style: typo.w500.textColor(appColors.secondarySlideTitle).get12,
             )
           ],
         ),

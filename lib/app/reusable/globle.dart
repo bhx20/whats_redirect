@@ -9,8 +9,8 @@ showToast(String message) {
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
-    textColor: AppColors.xff185E3C,
+    textColor: appColors.secondarySlideTitle,
     fontSize: 10.sp,
-    backgroundColor: AppColors.xffdbfed4,
+    backgroundColor: appColors.secondarySlideBg,
   );
 }

@@ -111,9 +111,12 @@ extension TextStyleExtensions on TextStyle {
 //==============================================================================
   TextStyle textColor(Color v) => copyWith(color: v);
 
-  TextStyle get black => textColor(AppColors.black);
-  TextStyle get white => textColor(AppColors.white);
-  TextStyle get gray => textColor(AppColors.gray);
+  TextStyle get black => textColor(appColors.black);
+  TextStyle get white => textColor(appColors.white);
+  TextStyle get lightTitle => textColor(appColors.lightTitle);
+  TextStyle get darkTitle => textColor(appColors.darkTitle);
+  TextStyle get lightHint => textColor(appColors.lightFieldHint);
+  TextStyle get darkHint => textColor(appColors.darkFieldHint);
 
 //==============================================================================
 // ** letterSpace **

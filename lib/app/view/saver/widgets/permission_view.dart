@@ -38,15 +38,15 @@ class PermissionView extends GetView<StatusController> {
                   },
                   child: Container(
                     height: 30.h,
-                    width: 130.w,
+                    width: 150.w,
                     margin: EdgeInsets.symmetric(vertical: 15.h),
                     decoration: BoxDecoration(
-                        color: AppColors.xff1DAB61,
+                        color: appColors.xff1DAB61,
                         borderRadius: BorderRadius.circular(50)),
                     child: Center(
                       child: Text(
                         "Grant Permission",
-                        style: typo.white,
+                        style: typo.white.bold,
                       ),
                     ),
                   ),

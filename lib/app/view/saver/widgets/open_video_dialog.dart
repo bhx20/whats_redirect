@@ -13,7 +13,7 @@ openVideo(BuildContext context, File file) {
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
-    backgroundColor: AppColors.trans,
+    backgroundColor: appColors.trans,
     builder: (BuildContext context) {
       return OpenVideoWidget(
         file: file,
@@ -48,7 +48,7 @@ class _OpenVideoWidgetState extends State<OpenVideoWidget> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: AppColors.white,
+          color: appColors.dialogBG,
           borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
       height: Get.height * 0.8,
       child: Scaffold(

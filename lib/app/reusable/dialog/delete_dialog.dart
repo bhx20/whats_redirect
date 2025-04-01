@@ -11,8 +11,6 @@ deleteDialog(context, {required UserNumber data}) {
   deleteView(UserNumber data) {
     var c = Get.put(RedirectController());
     return Dialog(
-      elevation: 0.0,
-      backgroundColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -32,7 +30,7 @@ deleteDialog(context, {required UserNumber data}) {
                     },
                     child: Text(
                       "Cancel",
-                      style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
                     )),
                 TextButton(
                     onPressed: () {
@@ -43,7 +41,7 @@ deleteDialog(context, {required UserNumber data}) {
                     },
                     child: Text(
                       "Delete",
-                      style: typo.get12.w700.textColor(AppColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
                     )),
               ],
             ),

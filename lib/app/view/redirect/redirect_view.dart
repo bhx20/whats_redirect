@@ -12,9 +12,9 @@ import '../../model/user_number_model.dart';
 import '../../reusable/app_field/app_feild.dart';
 import '../../reusable/dialog/delete_dialog.dart';
 import '../../reusable/dialog/redirect_dialog.dart';
-import '../../reusable/dialog/warning_dialog.dart';
 import '../../reusable/generated_scaffold.dart';
 import '../../reusable/loader/simmer.dart';
+import '../../reusable/menu/dashboard_manu.dart';
 
 class RedirectView extends StatefulWidget {
   const RedirectView({super.key});
@@ -38,13 +38,12 @@ class _RedirectViewState extends State<RedirectView> {
                   redirect(context);
                 },
                 elevation: 3,
-                backgroundColor: AppColors.xff1DAB61,
+                backgroundColor: appColors.xff1DAB61,
                 child: Center(
-                  child: Image.asset(
-                    "assets/add.png",
-                    height: 14.h,
-                  ),
-                ),
+                    child: Image.asset(
+                  "assets/add.png",
+                  height: 12.h,
+                )),
               );
             } else {
               return const SizedBox();
@@ -78,6 +77,37 @@ class _RedirectViewState extends State<RedirectView> {
                           ],
                         ),
                       ),
+                      Column(
+                        children: [
+                          ListTile(
+                            title: Text("Light Mode"),
+                            leading: Obx(() => Radio(
+                                  value: ThemeMode.light,
+                                  groupValue: c.themeService.themeMode.value,
+                                  onChanged: (value) =>
+                                      c.setTheme(ThemeMode.light),
+                                )),
+                          ),
+                          ListTile(
+                            title: Text("Dark Mode"),
+                            leading: Obx(() => Radio(
+                                  value: ThemeMode.dark,
+                                  groupValue: c.themeService.themeMode.value,
+                                  onChanged: (value) =>
+                                      c.setTheme(ThemeMode.dark),
+                                )),
+                          ),
+                          ListTile(
+                            title: Text("System Default"),
+                            leading: Obx(() => Radio(
+                                  value: ThemeMode.system,
+                                  groupValue: c.themeService.themeMode.value,
+                                  onChanged: (value) =>
+                                      c.setTheme(ThemeMode.system),
+                                )),
+                          ),
+                        ],
+                      ),
                       if (c.filteredUserNumberList.isNotEmpty)
                         if (c.loading.isFalse)
                           _buildContactList(c.filteredUserNumberList)
@@ -89,7 +119,7 @@ class _RedirectViewState extends State<RedirectView> {
                               vertical: 40.h, horizontal: 10.w),
                           child: Text(
                             'No contacts found.\nTry adjusting your search or filter.',
-                            style: typo.get12.textColor(AppColors.xff7b7a78),
+                            style: typo.get12.textColor(appColors.xff7b7a78),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -124,12 +154,12 @@ class _RedirectViewState extends State<RedirectView> {
                           width: 100.w,
                           margin: EdgeInsets.symmetric(vertical: 15.h),
                           decoration: BoxDecoration(
-                              color: AppColors.xff1DAB61,
+                              color: appColors.xff1DAB61,
                               borderRadius: BorderRadius.circular(50)),
                           child: Center(
                             child: Text(
                               "Add",
-                              style: typo.white,
+                              style: typo.white.bold,
                             ),
                           ),
                         ),
@@ -232,8 +262,8 @@ class _RedirectViewState extends State<RedirectView> {
                     Get.find<RedirectController>()
                         .launchSMS(contact[index].number ?? "");
                   },
-                  backgroundColor: AppColors.xff1DAB61,
-                  foregroundColor: Colors.white,
+                  backgroundColor: appColors.secondarySlideBg,
+                  foregroundColor: appColors.secondarySlideTitle,
                   icon: Icons.chat,
                 ),
                 SlidableAction(
@@ -244,8 +274,8 @@ class _RedirectViewState extends State<RedirectView> {
                     Get.find<RedirectController>()
                         .launchPhoneDial(contact[index].number ?? "");
                   },
-                  backgroundColor: AppColors.xffdbfed4,
-                  foregroundColor: AppColors.xff1DAB61,
+                  backgroundColor: appColors.primarySlideBg,
+                  foregroundColor: appColors.primarySlideTitle,
                   icon: Icons.call,
                 ),
               ],
@@ -260,8 +290,8 @@ class _RedirectViewState extends State<RedirectView> {
                   onPressed: (context) {
                     redirect(context, data: contact[index]);
                   },
-                  backgroundColor: AppColors.xffdbfed4,
-                  foregroundColor: AppColors.xff1DAB61,
+                  backgroundColor: appColors.primarySlideBg,
+                  foregroundColor: appColors.primarySlideTitle,
                   icon: Icons.edit,
                 ),
                 SlidableAction(
@@ -269,8 +299,8 @@ class _RedirectViewState extends State<RedirectView> {
                   onPressed: (context) {
                     deleteDialog(context, data: contact[index]);
                   },
-                  backgroundColor: AppColors.xff1DAB61,
-                  foregroundColor: Colors.white,
+                  backgroundColor: appColors.secondarySlideBg,
+                  foregroundColor: appColors.secondarySlideTitle,
                   icon: Icons.delete,
                 ),
               ],
@@ -300,8 +330,8 @@ class _RedirectViewState extends State<RedirectView> {
           child: Container(
             decoration: BoxDecoration(
                 color: c.selectedCategory.value == index
-                    ? AppColors.xffdbfed4
-                    : AppColors.xfff6f5f3,
+                    ? appColors.filterBg
+                    : appColors.unfocusedFilterBg,
                 borderRadius: BorderRadius.circular(100)),
             margin: EdgeInsets.symmetric(vertical: 15.h, horizontal: 3.w),
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
@@ -310,8 +340,8 @@ class _RedirectViewState extends State<RedirectView> {
               c.filterList[index],
               style: typo.w500.textColor(
                 c.selectedCategory.value == index
-                    ? AppColors.xff185E3C
-                    : AppColors.xff7b7a78,
+                    ? appColors.filterTitle
+                    : appColors.unfocusedFilterTitle,
               ),
             )),
           ),
@@ -339,72 +369,64 @@ class _RedirectViewState extends State<RedirectView> {
               code: contact[index].code ?? "");
           Get.find<RedirectController>().launchWhatsApp(data, saveOnDB: false);
         },
-        child: Container(
-          color: AppColors.white,
-          child: Row(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: leadingColor.withOpacity(0.3),
-                      child: data.imageUrl != null
-                          ? ClipOval(child: Image.memory(data.imageUrl!))
-                          : data.userName == "Unknown"
-                              ? Icon(
-                                  Icons.person_rounded,
-                                  color: leadingColor,
-                                  size: 24,
-                                )
-                              : Text(
-                                  data.userName?[0] ?? "",
-                                  style:
-                                      typo.get20.bold.textColor(leadingColor),
-                                ),
-                    ),
-                    SizedBox(width: 10.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          data.userName ?? "Unknown",
-                          selectionColor: Colors.white,
-                          maxLines: 1,
-                          style: typo.w500.get14,
-                        ),
-                        Text(
-                          "${data.code} ${data.number ?? " "}",
-                          selectionColor: Colors.white,
-                          maxLines: 1,
-                          style: typo.get11.textColor(AppColors.xff7b7a78),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: leadingColor.withOpacity(0.3),
+                    child: data.imageUrl != null
+                        ? ClipOval(child: Image.memory(data.imageUrl!))
+                        : data.userName == "Unknown"
+                            ? Icon(
+                                Icons.person_rounded,
+                                color: leadingColor,
+                                size: 24,
+                              )
+                            : Text(
+                                data.userName?[0] ?? "",
+                                style: typo.get20.bold.textColor(leadingColor),
+                              ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        data.userName ?? "Unknown",
+                        maxLines: 1,
+                        style: typo.w500.get14,
+                      ),
+                      Text(
+                        "${data.code} ${data.number ?? " "}",
+                        maxLines: 1,
+                        style: typo.get11.textColor(appColors.xff7b7a78),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      formattedTime,
-                      selectionColor: Colors.white,
-                      style: typo.get10.textColor(AppColors.xff7b7a78),
-                    ),
-                    Text(
-                      formattedDate,
-                      selectionColor: Colors.white,
-                      style: typo.get10.textColor(AppColors.xff7b7a78),
-                    ),
-                  ],
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    formattedTime,
+                    style: typo.get10.textColor(appColors.xff7b7a78),
+                  ),
+                  Text(
+                    formattedDate,
+                    style: typo.get10.textColor(appColors.xff7b7a78),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -412,59 +434,15 @@ class _RedirectViewState extends State<RedirectView> {
 
   AppBar _topBar(RedirectController c) {
     return AppBar(
-      surfaceTintColor: Colors.transparent,
-      backgroundColor: Colors.white,
-      title: const Text(
+      title: Text(
         'What\'s Redirect',
-        style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff1daa61)),
+        style: Theme.of(context).textTheme.titleMedium,
       ),
       actions: [
         Obx(() {
           if (c.userNumberList.isNotEmpty) {
             return IconButton(
-              onPressed: () {
-                showMenu(
-                  color: AppColors.white,
-                  context: Get.context!,
-                  elevation: 0.5,
-                  position: const RelativeRect.fromLTRB(0, 0, -100, 0),
-                  items: c.items.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    var item = entry.value;
-
-                    return PopupMenuItem<int>(
-                      value: index + 1,
-                      onTap: () {
-                        if (index == 0) {
-                          Get.back();
-                          c.getUserNumber();
-                        } else if (index == 1) {
-                          Get.back();
-                          c.help();
-                        } else {
-                          warningDialog(context);
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 10.h, left: 5.h),
-                            child: Icon(
-                              item.icon,
-                              size: 15.h,
-                              color: AppColors.xff185E3C,
-                            ),
-                          ),
-                          Text(
-                            item.title,
-                            style: typo.get10.black.w700,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                );
-              },
+              onPressed: showDashBoardManu,
               icon: const Icon(Icons.more_vert_rounded),
             );
           } else {
