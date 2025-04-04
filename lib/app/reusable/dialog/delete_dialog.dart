@@ -30,7 +30,7 @@ deleteDialog(context, {required UserNumber data}) {
                     },
                     child: Text(
                       "Cancel",
-                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.appColor),
                     )),
                 TextButton(
                     onPressed: () {
@@ -41,7 +41,7 @@ deleteDialog(context, {required UserNumber data}) {
                     },
                     child: Text(
                       "Delete",
-                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.appColor),
                     )),
               ],
             ),

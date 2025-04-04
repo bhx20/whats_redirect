@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:redirect/app/core/app_colors.dart';
 import 'package:redirect/app/reusable/generated_scaffold.dart';
@@ -69,39 +68,30 @@ class _DashBoardViewState extends State<DashBoardView> {
                     () => NavigationBar(
                       selectedIndex: c.currentPageIndex.value,
                       onDestinationSelected: (int index) {
-                        c.currentPageIndex(index);
-                        c.update();
+                        c.changePage(index); // Use the new method
                       },
                       destinations: [
                         NavigationDestination(
-                          selectedIcon: Image.asset(
-                            "assets/redirect_fill.png",
-                            height: 13.h,
-                            color: appColors.indicatorIcon,
-                          ),
-                          icon: Image.asset(
-                            "assets/redirect.png",
-                            height: 13.h,
-                            color: appColors.unfocusedIndicatorIcon,
-                          ),
-                          label: 'What\'s Redirect',
+                          selectedIcon:
+                              ImageIcon(AssetImage("assets/redirect_fill.png")),
+                          icon: ImageIcon(AssetImage("assets/redirect.png")),
+                          label: 'Redirect',
                         ),
                         NavigationDestination(
-                          selectedIcon: Image.asset(
-                            "assets/saver_fill.png",
-                            height: 22.h,
-                            color: appColors.indicatorIcon,
-                          ),
-                          icon: Image.asset(
-                            "assets/saver.png",
-                            height: 22.h,
-                            color: appColors.unfocusedIndicatorIcon,
-                          ),
-                          label: 'What\'s Saver',
+                          selectedIcon:
+                              ImageIcon(AssetImage("assets/saver_fill.png")),
+                          icon: Obx(() => c.showBadge.value
+                              ? Badge(
+                                  backgroundColor: appColors.buttonForeground,
+                                  child:
+                                      ImageIcon(AssetImage("assets/saver.png")),
+                                )
+                              : ImageIcon(AssetImage("assets/saver.png"))),
+                          label: 'Saver',
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               body: [

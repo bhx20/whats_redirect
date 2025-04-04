@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:redirect/app/core/app_typography.dart';
-import 'package:redirect/app/reusable/menu/dashboard_manu.dart';
 import 'package:redirect/app/view/saver/widgets/media_view.dart';
 import 'package:redirect/app/view/saver/widgets/permission_view.dart';
 
 import '../../controller/status_controller.dart';
+import '../../core/constants.dart';
 import '../../reusable/generated_scaffold.dart';
+import '../../reusable/menu/dashboard_manu.dart';
 
 class StatusView extends StatefulWidget {
   const StatusView({super.key});
@@ -51,7 +52,7 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
     if (await _controller.permissionCheck == 1) {
       isMore(true);
 
-      setState(() {}); // Ensure the UI is updated
+      setState(() {});
     }
   }
 
@@ -119,8 +120,11 @@ class _StatusViewState extends State<StatusView> with WidgetsBindingObserver {
       actions: [
         if (isMore.isTrue)
           IconButton(
+            key: menuKey,
             onPressed: () {
-              showDashBoardManu();
+              showDashBoardManu(onRefresh: () {
+                c.getStatusData();
+              });
             },
             icon: const Icon(Icons.more_vert_outlined),
           ),

@@ -95,7 +95,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
                       },
                       child: Text(
                         "Cancel",
-                        style: typo.get12.w700.textColor(appColors.xff1DAB61),
+                        style: typo.get12.w700.textColor(appColors.appColor),
                       )),
                   TextButton(
                       onPressed: () async {
@@ -130,7 +130,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
                       },
                       child: Text(
                         widget.data != null ? "Update" : "Redirect",
-                        style: typo.get12.w700.textColor(appColors.xff1DAB61),
+                        style: typo.get12.w700.textColor(appColors.appColor),
                       )),
                   if (widget.data == null)
                     TextButton(
@@ -144,7 +144,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
                         },
                         child: Text(
                           "Save",
-                          style: typo.get12.w700.textColor(appColors.xff1DAB61),
+                          style: typo.get12.w700.textColor(appColors.appColor),
                         )),
                 ],
               ),
@@ -164,7 +164,7 @@ class _RedirectWidgetState extends State<RedirectWidget> {
       initialSelection: initialSelection,
       showFlag: true,
       hideSearch: true,
-      textStyle: typo.black.bold,
+      textStyle: typo.bold,
       flagWidth: 20,
       barrierColor: appColors.trans,
       headerText: "Select Country Code",

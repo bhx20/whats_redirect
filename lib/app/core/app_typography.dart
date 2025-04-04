@@ -103,6 +103,7 @@ extension TextStyleExtensions on TextStyle {
   TextStyle get w300 => weight(FontWeight.w300);
   TextStyle get w400 => weight(FontWeight.w400);
   TextStyle get w500 => weight(FontWeight.w500);
+  TextStyle get w600 => weight(FontWeight.w600);
   TextStyle get w700 => weight(FontWeight.w700);
   TextStyle get w900 => weight(FontWeight.w900);
 
@@ -111,12 +112,12 @@ extension TextStyleExtensions on TextStyle {
 //==============================================================================
   TextStyle textColor(Color v) => copyWith(color: v);
 
-  TextStyle get black => textColor(appColors.black);
-  TextStyle get white => textColor(appColors.white);
   TextStyle get lightTitle => textColor(appColors.lightTitle);
   TextStyle get darkTitle => textColor(appColors.darkTitle);
   TextStyle get lightHint => textColor(appColors.lightFieldHint);
   TextStyle get darkHint => textColor(appColors.darkFieldHint);
+  TextStyle get lightText => textColor(appColors.lightText);
+  TextStyle get darkText => textColor(appColors.darkText);
 
 //==============================================================================
 // ** letterSpace **

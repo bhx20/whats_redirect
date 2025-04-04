@@ -134,14 +134,14 @@ class MediaView extends StatelessWidget {
                 child: Text(
               'Error generating thumbnail',
               textAlign: TextAlign.center,
-              style: typo.black.get8,
+              style: typo.get8,
             ));
           } else if (!snapshot.hasData || snapshot.data == null) {
             return Center(
                 child: Text(
               'No Thumbnail Available',
               textAlign: TextAlign.center,
-              style: typo.black.get8,
+              style: typo.get8,
             ));
           } else {
             return Stack(
@@ -159,7 +159,6 @@ class MediaView extends StatelessWidget {
                 )
               ],
             );
-            ;
           }
         },
       );
@@ -173,7 +172,7 @@ class MediaView extends StatelessWidget {
         margin: EdgeInsets.all(2.h),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: appColors.xff1DAB61, width: 2.5)),
+            border: Border.all(color: appColors.appColor, width: 2.5)),
         child: Padding(
           padding: EdgeInsets.all(1.5.h),
           child: ClipOval(

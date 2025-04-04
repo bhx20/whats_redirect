@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/status_controller.dart';
-import '../../../core/app_colors.dart';
 import '../../../core/app_typography.dart';
+import '../../../reusable/button/app_button.dart';
 import '../../../reusable/generated_scaffold.dart';
 
 class PermissionView extends GetView<StatusController> {
@@ -30,27 +30,13 @@ class PermissionView extends GetView<StatusController> {
               textAlign: TextAlign.center,
               style: typo.w500.get10,
             ),
-            Padding(
-                padding: EdgeInsets.only(top: 2.h),
-                child: GestureDetector(
-                  onTap: () {
-                    controller.requestPermission();
-                  },
-                  child: Container(
-                    height: 30.h,
-                    width: 150.w,
-                    margin: EdgeInsets.symmetric(vertical: 15.h),
-                    decoration: BoxDecoration(
-                        color: appColors.xff1DAB61,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Center(
-                      child: Text(
-                        "Grant Permission",
-                        style: typo.white.bold,
-                      ),
-                    ),
-                  ),
-                )),
+            SizedBox(height: 20.h),
+            AppButton(
+                text: "Grant Permission",
+                onPressed: () {
+                  controller.requestPermission();
+                },
+                width: 150.w)
           ],
         ),
       ),

@@ -7,9 +7,11 @@ import 'package:redirect/app/controller/redirect_controller.dart';
 import 'package:redirect/app/core/app_typography.dart';
 
 import '../../core/app_colors.dart';
+import '../../core/constants.dart';
 import '../../model/local.dart';
 import '../../model/user_number_model.dart';
 import '../../reusable/app_field/app_feild.dart';
+import '../../reusable/button/app_button.dart';
 import '../../reusable/dialog/delete_dialog.dart';
 import '../../reusable/dialog/redirect_dialog.dart';
 import '../../reusable/generated_scaffold.dart';
@@ -38,11 +40,12 @@ class _RedirectViewState extends State<RedirectView> {
                   redirect(context);
                 },
                 elevation: 3,
-                backgroundColor: appColors.xff1DAB61,
+                backgroundColor: appColors.appColor,
                 child: Center(
                     child: Image.asset(
                   "assets/add.png",
-                  height: 12.h,
+                  height: 22.h,
+                  color: appColors.floatColor,
                 )),
               );
             } else {
@@ -77,37 +80,6 @@ class _RedirectViewState extends State<RedirectView> {
                           ],
                         ),
                       ),
-                      Column(
-                        children: [
-                          ListTile(
-                            title: Text("Light Mode"),
-                            leading: Obx(() => Radio(
-                                  value: ThemeMode.light,
-                                  groupValue: c.themeService.themeMode.value,
-                                  onChanged: (value) =>
-                                      c.setTheme(ThemeMode.light),
-                                )),
-                          ),
-                          ListTile(
-                            title: Text("Dark Mode"),
-                            leading: Obx(() => Radio(
-                                  value: ThemeMode.dark,
-                                  groupValue: c.themeService.themeMode.value,
-                                  onChanged: (value) =>
-                                      c.setTheme(ThemeMode.dark),
-                                )),
-                          ),
-                          ListTile(
-                            title: Text("System Default"),
-                            leading: Obx(() => Radio(
-                                  value: ThemeMode.system,
-                                  groupValue: c.themeService.themeMode.value,
-                                  onChanged: (value) =>
-                                      c.setTheme(ThemeMode.system),
-                                )),
-                          ),
-                        ],
-                      ),
                       if (c.filteredUserNumberList.isNotEmpty)
                         if (c.loading.isFalse)
                           _buildContactList(c.filteredUserNumberList)
@@ -119,7 +91,7 @@ class _RedirectViewState extends State<RedirectView> {
                               vertical: 40.h, horizontal: 10.w),
                           child: Text(
                             'No contacts found.\nTry adjusting your search or filter.',
-                            style: typo.get12.textColor(appColors.xff7b7a78),
+                            style: typo.get12.textColor(appColors.subtitle),
                             textAlign: TextAlign.center,
                           ),
                         )
@@ -145,25 +117,13 @@ class _RedirectViewState extends State<RedirectView> {
                         textAlign: TextAlign.center,
                         style: typo.w500.get10,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          redirect(context);
-                        },
-                        child: Container(
-                          height: 30.h,
-                          width: 100.w,
-                          margin: EdgeInsets.symmetric(vertical: 15.h),
-                          decoration: BoxDecoration(
-                              color: appColors.xff1DAB61,
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Center(
-                            child: Text(
-                              "Add",
-                              style: typo.white.bold,
-                            ),
-                          ),
-                        ),
-                      )
+                      SizedBox(height: 20.h),
+                      AppButton(
+                          text: "Add",
+                          onPressed: () {
+                            redirect(context);
+                          },
+                          width: 100.w)
                     ],
                   ),
                 ),
@@ -402,7 +362,7 @@ class _RedirectViewState extends State<RedirectView> {
                       Text(
                         "${data.code} ${data.number ?? " "}",
                         maxLines: 1,
-                        style: typo.get11.textColor(appColors.xff7b7a78),
+                        style: typo.get11.textColor(appColors.subtitle),
                       ),
                     ],
                   ),
@@ -417,11 +377,11 @@ class _RedirectViewState extends State<RedirectView> {
                 children: [
                   Text(
                     formattedTime,
-                    style: typo.get10.textColor(appColors.xff7b7a78),
+                    style: typo.get9.textColor(appColors.subtitle),
                   ),
                   Text(
                     formattedDate,
-                    style: typo.get10.textColor(appColors.xff7b7a78),
+                    style: typo.get9.textColor(appColors.subtitle),
                   ),
                 ],
               ),
@@ -442,7 +402,12 @@ class _RedirectViewState extends State<RedirectView> {
         Obx(() {
           if (c.userNumberList.isNotEmpty) {
             return IconButton(
-              onPressed: showDashBoardManu,
+              key: menuKey,
+              onPressed: () {
+                showDashBoardManu(onRefresh: () {
+                  c.getUserNumber();
+                });
+              },
               icon: const Icon(Icons.more_vert_rounded),
             );
           } else {

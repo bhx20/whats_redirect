@@ -4,12 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../model/local.dart';
 import '../model/user_number_model.dart';
 import '../reusable/globle.dart';
-import '../reusable/theme_service/theme_service.dart';
 import '../uttils/local_db/sql_helper.dart';
 
 class RedirectController extends GetxController {
@@ -23,11 +23,6 @@ class RedirectController extends GetxController {
   RxString selectedCountryCode = "+91".obs;
   RxString selectedCountryOrigin = "IN".obs;
   RxBool permissionDenied = false.obs;
-  final themeService = ThemeService.instance;
-
-  Future<void> setTheme(ThemeMode mode) async {
-    themeService.setTheme(mode);
-  }
 
   List<String> filterList = ["All", "Saved", "Unsaved"];
 
@@ -101,10 +96,10 @@ class RedirectController extends GetxController {
       icon: Icons.help_outline,
       title: "Help",
     ),
-    MoreItem(
-      icon: Icons.exit_to_app,
-      title: "Exit",
-    ),
+    // MoreItem(
+    //   icon: Icons.settings,
+    //   title: "Settings",
+    // ),
   ];
 
   Future<void> launchWhatsApp(NumberData data, {bool saveOnDB = true}) async {
@@ -190,12 +185,31 @@ class RedirectController extends GetxController {
     loading(false);
   }
 
-  void help() async {
-    final Uri params = Uri(
-      scheme: 'mailto',
-      path: "coddynet@gmail.com",
-    );
-    urlLauncher(params);
+  helpSupport() async {
+    String phoneNumber = "+919727409439";
+    String appName = "What's Redirect";
+    String dateTime = DateFormat('HH:mm a (dd/MM/yyyy)').format(DateTime.now());
+
+    // Pre-formatted WhatsApp Help Message
+    String message = """
+🆘 *Help & Support - $appName*  
+📅 *Date:* $dateTime  
+📱 *Device:* Android  
+
+Hello,  
+I need help regarding *[describe your issue]*.  
+Please assist me.  
+  """;
+
+    // WhatsApp URL
+    String androidUrl =
+        "whatsapp://send?phone=$phoneNumber&text=${Uri.encodeComponent(message)}";
+
+    try {
+      await launchUrl(Uri.parse(androidUrl));
+    } catch (e) {
+      showToast("Unable to send help request.");
+    }
   }
 
   Future<void> urlLauncher(Uri url) async {

@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
@@ -30,16 +31,8 @@ class StatusController extends GetxController {
 
   List<MoreItem> items = [
     MoreItem(
-      icon: Icons.refresh,
-      title: "Refresh",
-    ),
-    MoreItem(
-      icon: Icons.help_outline,
-      title: "Help",
-    ),
-    MoreItem(
-      icon: Icons.exit_to_app,
-      title: "Exit",
+      icon: Icons.report,
+      title: "Report",
     ),
   ];
 
@@ -57,6 +50,33 @@ class StatusController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  reportStatus() async {
+    String phoneNumber = "+919727409439";
+    String appName = "What's Redirect";
+    String issue = "Describe your issue here...";
+    String deviceInfo = "Android";
+    String dateTime = DateFormat('HH:mm a (dd/MM/yyyy)').format(DateTime.now());
+
+    // Formatting the WhatsApp message
+    String message = """
+📢 *Report Issue - $appName*    
+📅 *Date:* $dateTime  
+📱 *Device:* $deviceInfo  
+
+✍ *Issue:*  
+$issue
+  """;
+
+    String androidUrl =
+        "whatsapp://send?phone=$phoneNumber&text=${Uri.encodeComponent(message)}";
+
+    try {
+      await launchUrl(Uri.parse(androidUrl));
+    } catch (e) {
+      showToast("We are not able to send the report.");
+    }
   }
 
   Future<int> loadPermission() async {
@@ -224,7 +244,7 @@ class StatusController extends GetxController {
     return thumbnail != null ? File(thumbnail) : null;
   }
 
-  void shareImage(String imgPath) async {
+  void shareImage(String imgPath, String text) async {
     if (imgPath.isNotEmpty) {
       final file = File(imgPath);
       if (await file.exists()) {
@@ -233,7 +253,7 @@ class StatusController extends GetxController {
         final newImagePath = '${directory.path}/$imageFileName';
         await file.copy(newImagePath);
         Get.back();
-        Share.shareXFiles([XFile(newImagePath)]);
+        Share.shareXFiles([XFile(newImagePath)], text: text);
       } else {
         showToast("Image file not found");
       }
@@ -242,7 +262,7 @@ class StatusController extends GetxController {
     }
   }
 
-  void shareVideo(String videoPath) async {
+  void shareVideo(String videoPath, String text) async {
     if (videoPath.isNotEmpty) {
       final file = File(videoPath);
       if (await file.exists()) {
@@ -251,7 +271,7 @@ class StatusController extends GetxController {
         final newImagePath = '${directory.path}/$imageFileName';
         await file.copy(newImagePath);
         Get.back();
-        Share.shareXFiles([XFile(newImagePath)]);
+        Share.shareXFiles([XFile(newImagePath)], text: text);
       } else {
         showToast("video file not found");
       }

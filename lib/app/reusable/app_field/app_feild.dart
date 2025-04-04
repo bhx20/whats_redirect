@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:redirect/app/core/app_colors.dart';
 import 'package:redirect/app/core/app_typography.dart';
 
 class AppTextField extends StatelessWidget {
@@ -14,6 +15,7 @@ class AppTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final List<TextInputFormatter>? numFormater;
   final int? maxLength;
+  final InputDecoration? inputDecoration;
 
   const AppTextField(
       {super.key,
@@ -27,13 +29,14 @@ class AppTextField extends StatelessWidget {
       this.focusNode,
       this.onChanged,
       this.numFormater,
-      this.maxLength});
+      this.maxLength,
+      this.inputDecoration});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       keyboardType: keyboardType ?? TextInputType.number,
-      cursorColor: const Color(0xff1daa61),
+      cursorColor: appColors.appColor,
       onSubmitted: onSubmitted,
       inputFormatters:
           numFormater ?? [FilteringTextInputFormatter.allow(RegExp(r'[0-9+]'))],
@@ -42,12 +45,13 @@ class AppTextField extends StatelessWidget {
       autofocus: autofocus,
       focusNode: focusNode,
       onChanged: onChanged,
-      decoration: InputDecoration(
-        counterText: "",
-        filled: true,
-        hintText: hintText,
-        prefixIcon: prefix,
-      ),
+      decoration: inputDecoration ??
+          InputDecoration(
+            counterText: "",
+            filled: true,
+            hintText: hintText,
+            prefixIcon: prefix,
+          ),
       controller: controller,
     );
   }

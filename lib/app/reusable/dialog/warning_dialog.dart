@@ -28,7 +28,7 @@ warningDialog(context) {
                     },
                     child: Text(
                       "Yes",
-                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.appColor),
                     )),
                 TextButton(
                     onPressed: () {
@@ -36,7 +36,7 @@ warningDialog(context) {
                     },
                     child: Text(
                       "No",
-                      style: typo.get12.w700.textColor(appColors.xff1DAB61),
+                      style: typo.get12.w700.textColor(appColors.appColor),
                     )),
               ],
             ),

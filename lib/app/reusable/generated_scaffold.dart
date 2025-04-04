@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:redirect/app/reusable/theme_service/theme_service.dart';
 
 import '../core/app_colors.dart';
 
@@ -9,34 +10,36 @@ class AppScaffold extends StatelessWidget {
   final Widget? body;
   final Widget? floatingActionButton;
   final Widget? bottomNavigationBar;
-  final Color? statusBarColor;
-  final Color? backGroundColor;
 
-  const AppScaffold(
-      {super.key,
-      this.sKey,
-      this.appBar,
-      this.body,
-      this.floatingActionButton,
-      this.bottomNavigationBar,
-      this.statusBarColor,
-      this.backGroundColor});
+  const AppScaffold({
+    super.key,
+    this.sKey,
+    this.appBar,
+    this.body,
+    this.floatingActionButton,
+    this.bottomNavigationBar,
+  });
 
   @override
   Widget build(BuildContext context) {
+    var isDarkMode = ThemeService.instance.isDarkMode;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.dark,
-        statusBarColor: statusBarColor ?? appColors.white,
+        statusBarColor:
+            isDarkMode ? appColors.darkBackground : appColors.lightBackground,
+        statusBarIconBrightness:
+            isDarkMode ? Brightness.light : Brightness.dark,
+        systemNavigationBarColor:
+            isDarkMode ? appColors.darkBackground : appColors.lightBackground,
+        systemNavigationBarIconBrightness:
+            isDarkMode ? Brightness.light : Brightness.dark,
       ),
-      child: SafeArea(
-        child: Scaffold(
-          key: key,
-          appBar: appBar,
-          body: body,
-          floatingActionButton: floatingActionButton,
-          bottomNavigationBar: bottomNavigationBar,
-        ),
+      child: Scaffold(
+        key: key,
+        appBar: appBar,
+        body: body,
+        floatingActionButton: floatingActionButton,
+        bottomNavigationBar: bottomNavigationBar,
       ),
     );
   }

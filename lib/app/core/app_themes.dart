@@ -12,7 +12,7 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       backgroundColor: appColors.lightBackground,
       elevation: 0,
-      iconTheme: IconThemeData(color: appColors.black),
+      iconTheme: IconThemeData(color: appColors.lightIcon),
     ),
     popupMenuTheme: PopupMenuThemeData(
       color: appColors.lightPopBackground,
@@ -37,35 +37,52 @@ class AppTheme {
           borderSide: BorderSide(color: appColors.trans),
           borderRadius: BorderRadius.all(Radius.circular(100))),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: appColors.lightButtonBackground,
+        foregroundColor: appColors.lightButtonForeground,
+        elevation: 0.0,
+        textStyle: typo.bold,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100),
+        ),
+      ),
+    ),
     navigationBarTheme: NavigationBarThemeData(
       elevation: 0,
       backgroundColor: appColors.lightBackground,
       indicatorColor: appColors.lightIndicator,
+      iconTheme: MaterialStateProperty.resolveWith<IconThemeData>((states) {
+        if (states.contains(MaterialState.selected)) {
+          return IconThemeData(color: appColors.lightIndicatorIcon, size: 22.h);
+        }
+        return IconThemeData(color: appColors.lightIcon, size: 22.h);
+      }),
       labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>(
         (Set<WidgetState> states) {
           if (states.contains(WidgetState.selected)) {
-            return typo.w700.get11;
+            return typo.w600.get11;
           }
           return typo.w500.get11;
         },
       ),
     ),
     textTheme: TextTheme(
-      bodyLarge: typo.black,
-      bodyMedium: typo.black,
-      bodySmall: typo.black,
-      displayLarge: typo.black.get30,
-      displayMedium: typo.black.get26,
-      displaySmall: typo.black.get22,
+      bodyLarge: typo.lightText,
+      bodyMedium: typo.lightText,
+      bodySmall: typo.lightText,
+      displayLarge: typo.lightText.get30,
+      displayMedium: typo.lightText.get26,
+      displaySmall: typo.lightText.get22,
       titleLarge: typo.lightTitle.get20.bold,
       titleMedium: typo.lightTitle.get18.bold,
       titleSmall: typo.lightTitle.get16.bold,
-      labelLarge: typo.black.get14,
-      labelMedium: typo.black.get12,
-      labelSmall: typo.black.get10,
-      headlineLarge: typo.black.get32.bold,
-      headlineMedium: typo.black.get28.bold,
-      headlineSmall: typo.black.get24.bold,
+      labelLarge: typo.lightText.get14,
+      labelMedium: typo.lightText.get12,
+      labelSmall: typo.lightText.get10,
+      headlineLarge: typo.lightText.get32.bold,
+      headlineMedium: typo.lightText.get28.bold,
+      headlineSmall: typo.lightText.get24.bold,
     ),
   );
 
@@ -76,7 +93,7 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       backgroundColor: appColors.darkBackground,
       elevation: 0,
-      iconTheme: IconThemeData(color: appColors.white),
+      iconTheme: IconThemeData(color: appColors.darkIcon),
     ),
     popupMenuTheme:
         PopupMenuThemeData(color: appColors.darkPopBackground, elevation: 0.5),
@@ -97,35 +114,52 @@ class AppTheme {
     ),
     dialogTheme: DialogThemeData(
         backgroundColor: appColors.darkDialogBg, elevation: 0.0),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: appColors.darkButtonBackground,
+        foregroundColor: appColors.darkButtonForeground,
+        elevation: 0.0,
+        textStyle: typo.bold,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(100),
+        ),
+      ),
+    ),
     navigationBarTheme: NavigationBarThemeData(
       elevation: 0,
       backgroundColor: appColors.darkBackground,
       indicatorColor: appColors.darkIndicator,
+      iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return IconThemeData(color: appColors.darkIndicatorIcon, size: 22.h);
+        }
+        return IconThemeData(color: appColors.darkIcon, size: 22.h);
+      }),
       labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>(
         (Set<WidgetState> states) {
           if (states.contains(WidgetState.selected)) {
-            return typo.w700.get11;
+            return typo.w600.get11;
           }
           return typo.w500.get11;
         },
       ),
     ),
     textTheme: TextTheme(
-      bodyLarge: typo.white,
-      bodyMedium: typo.white,
-      bodySmall: typo.white,
-      displayLarge: typo.white.get30,
-      displayMedium: typo.white.get26,
-      displaySmall: typo.white.get22,
+      bodyLarge: typo.darkText,
+      bodyMedium: typo.darkText,
+      bodySmall: typo.darkText,
+      displayLarge: typo.darkText.get30,
+      displayMedium: typo.darkText.get26,
+      displaySmall: typo.darkText.get22,
       titleLarge: typo.darkTitle.get20.bold,
       titleMedium: typo.darkTitle.get18.bold,
       titleSmall: typo.darkTitle.get16.bold,
-      labelLarge: typo.white.get14,
-      labelMedium: typo.white.get12,
-      labelSmall: typo.white.get10,
-      headlineLarge: typo.white.get32.bold,
-      headlineMedium: typo.white.get28.bold,
-      headlineSmall: typo.white.get24.bold,
+      labelLarge: typo.darkText.get14,
+      labelMedium: typo.darkText.get12,
+      labelSmall: typo.darkText.get10,
+      headlineLarge: typo.darkText.get32.bold,
+      headlineMedium: typo.darkText.get28.bold,
+      headlineSmall: typo.darkText.get24.bold,
     ),
   );
 }

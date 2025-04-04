@@ -1,4 +1,4 @@
-package com.example.whats_redirect
+package com.app.redirect
 
 import io.flutter.embedding.android.FlutterActivity
 
