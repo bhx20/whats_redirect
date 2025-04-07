@@ -2,19 +2,14 @@
 
 A sleek and powerful Flutter app designed to enhance your WhatsApp experience. Start chats without saving numbers, manage recent contacts locally, and download viewed statuses — all in a clean, offline-friendly app.
 
----
-
-
 ![App Screenshot](./img.png)
-
----
 
 ## 🔗 Support & Quick Links  
 
-
 [![Buy Me a Coffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://www.buymeacoffee.com/sanketkalae)
 
-[![Download APK](https://img.shields.io/badge/Download%20APK-black?style=for-the-badge&logo=android&logoColor=green)](https://whats-redirect.netlify.app)
+[![Download APK](https://img.shields.io/badge/Download%20APK-grey?style=for-the-badge&logo=android&logoColor=green)](https://whats-redirect.netlify.app)
+
 
 ---
 
@@ -124,8 +119,10 @@ Have feedback or questions?
 
 ---
 
-## 📜 License
+## 📜 License & Attribution
 
 © 2025 Sanket Kalathiya — All rights reserved.  
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
+
+> If you reuse or distribute this code in any form, you **must provide visible attribution** to **Sanket Kalathiya** in your project documentation, UI, or credits section.
 
