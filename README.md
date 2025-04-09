@@ -66,7 +66,7 @@ Every number you enter is saved locally on your device. You can easily edit or d
 
 ## 🧩 Flutter Packages Used
 
-& url_launcher  
+- url_launcher  
 - path_provider  
 - sqflite  
 - intl  
